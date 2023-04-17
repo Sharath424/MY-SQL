@@ -494,7 +494,313 @@ CREATE TABLE Employee (
 
 ## Data Definition Language(DDL)
 
+A data definition language (DDL) is a computer language used to create and modify the structure of database objects in a database. These database objects include views, schemas, tables, indexes, etc.
+
+**Data Definition Laungauge Commands are as follows**
+
+1. [CREATE](#create-command) 
+
+2. [ALTER](#alter-command)
+
+3. [DROP](#drop-command)
+
+4. [TRUNCATE](#truncate-command)
+
+### Create Command
+
+create is a DDL SQL command used to create a table in a relational database management system.
+The table creation command requires the following details −
+
+*	Name of the table
+
+*	Name of the fields(Column) 
+
+*	Definitions for each field(Datatype)
+
+Syntax:
+
+```
+/* to create database */
+    CREATE DATABASE database_name;
+
+    /* to create schema */
+    CREATE SCHEMA schema_name;
+
+    /* to create table */
+CREATE TABLE <TABLE_NAME> 
+	( 
+		column_name1 datatype1, 
+		column_name2 datatype2, 
+		column_name3 datatype3, 
+		column_name4 datatype4 
+	);
+
+```
+Create Command Example
+
+```
+/* to create database */
+CREATE DATABASE EmployeeManagement;
+
+/* to create schema */
+CREATE SCHEMA Employees;
+
+/* to create table */
+CREATE TABLE Employee (
+    ID int NOT NULL,
+    FirstName varchar(255) NOT NULL,
+    LastName varchar(255) NOT NULL,
+    Age int ,
+   CONSTRAINT PK_Employee PRIMARY KEY (ID,LastName)
+);
+```
+Output:
+
+![image create ](images/create.png)
+
+### Alter Command
+
+Alter statement is used to add, delete or modify columns in an exisiting table
+
+*	Add column
+
+The basic syntax of an ALTER TABLE command to add a New Column in an existing table is as follows
+
+Syntax:
+
+```
+    ALTER  TABLE table_name
+	ADD column_name datatype;
+```
+
+Example:
+
+```
+ALTER TABLE Employee
+ADD Email varchar(255);
+```
+
+Output:
+![image Alter-table ](images/Alter-table.png)
+
+#### Modify column
+
+The basic syntax of an ALTER TABLE command to change the DATA TYPE of a column in a table is as follows.
+
+Syntax:
+
+```
+ALTER  TABLE  table_name 
+ALTER  COLUMN column_name  datatype;
+
+```
+
+Example:
+
+```
+ALTER TABLE Employee
+ADD DateOfBirth date;
+
+ALTER TABLE Employee
+MODIFY COLUMN DateOfBirth year;
+
+```
+
+Output:
+![image Alter-modify ](images/Alter-modify.png)
+
+#### Delete column
+
+The basic syntax of an ALTER TABLE command to DROP COLUMN in an existing table is as follows.
+
+Syntax:
+
+```
+ALTER  TABLE table_name 
+DROP  COLUMN column_name;
+
+```
+
+Example:
+
+```
+ALTER TABLE Employee
+DROP COLUMN DateOfBirth;
+
+```
+
+Output:
+![image Drop-column ](images/drop-column.png)
+
+
+### Drop Command
+
+It is very easy to drop an existing MySQL table, but you need to be very careful while deleting any existing table because the data lost will not be recovered after deleting a table. 
+
+Syntax:
+
+```
+DROP  TABLE  table_name;
+
+```
+
+Example:
+
+```
+DROP TABLE Employee
+
+
+```
+
+Output:
+
+![image Drop-table ](images/drop-table.png)
+
+### Truncate Command
+
+TRUNCATE command removes all the records from a table. But this command will not destroy the table's structure.
+
+Syntax:
+
+```
+TRUNCATE TABLE table_name ;
+```
+
+Example:
+
+```
+
+TRUNCATE TABLE Employee ;
+
+```
+Output:
+
+![image truncate ](images/truncate-table.png)
+
+
 ## Data Manipulation Lanaguage(DML)
+
+The DML commands in Structured Query Language change the data present in the SQL database. We can easily access, store, modify, update and delete the existing records from the database using DML commands.
+
+DML Commands are :
+
+* [Insert Command](#insert-command)
+
+* [Update Command](#update-command)
+
+* [Delete Command](#delete-command)
+
+### Insert Command
+
+* The SQL INSERT INTO Statement is used to add new rows of data to a table in the database.
+
+* Only one row is inserted with this syntax.
+
+* Insert a new row containing values for each column.
+
+* List values in the default order of the columns in the table.
+
+* Optionally, list the columns in the insert clause.
+
+* Enclose character and data values within single quotation marks.
+
+It is possible to write the INSERT INTO statement in two ways:
+
+1. Specify both the column names and the values to be inserted:
+
+Syntax:
+
+```
+INSERT INTO table_name (column1, column2, column3, ...)
+VALUES (value1, value2, value3, ...);
+
+```
+
+2. If you are adding values for all the columns of the table, you do not need to specify the column names in the SQL query. However, make sure the order of the values is in the same order as the columns in the table. Here, the INSERT INTO syntax would be as follows:
+
+```
+INSERT INTO table_name VALUES (value1, value2, value3, ...);
+```
+
+Example:
+
+```
+INSERT INTO Employee (ID,FirstName, LastName, Age)
+VALUES (1,'Cardinal', 'Tom B. Erichsen', 21);
+
+```
+
+Output:
+
+![image insert ](images/insert.png)
+
+### Update Command
+
+* The UPDATE Query is used to modify the existing records in a table.
+
+* You can use the WHERE clause with the UPDATE query to update the selected rows, otherwise, all the rows would be affected.
+
+
+Syntax:
+
+```
+UPDATE table_name 
+SET column1 = value1, column2 = value2...., columnN = valueN 
+WHERE [condition];
+
+```
+Example:
+
+```
+UPDATE Employee
+SET FirstName = 'Alfred', LastName = 'Schmidt'
+WHERE ID = 1;
+
+```
+Output:
+
+![image update ](images/update.png)
+
+
+
+### Delete Command
+
+* The SQL DELETE Query is used to delete the existing records from a table.
+* You can use the WHERE clause with a DELETE query to delete the selected rows, otherwise all the records would be deleted. 
+
+Syntax:
+
+```
+DELETE FROM table_name 
+WHERE [condition];
+
+```
+Example:
+
+```
+DELETE FROM Employee WHERE  ID = 1;
+
+```
+
+Output:
+
+![image delete ](images/delete.png)
+
+
+## Data Control Language
+
+It is used to control privileges in Database. To perform any operation in the database, such as for creating tables, sequences or views, a user needs privileges.
+
+The DCL statements are
+
+1. [GRANT](#grant-command)
+
+2. [REVOKE](#revoke-command)
+
+### Grant Command
+
+### Revoke Command
+
 
 ## Transaction Control Lanaguage(TCL)
 
