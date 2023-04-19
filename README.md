@@ -1466,15 +1466,17 @@ Output:
 
 SQL Server (Transact-SQL) JOINS are used to retrieve data from multiple tables. A SQL Server JOIN is performed whenever two or more tables are joined in a SQL statement.
 
-There are 4 different types of SQL Server joins:
+There are 2 different types of SQL Server joins:
 
 1. [INNER JOIN](#inner-join)
 
-2. [LEFT JOIN](#left-join)
+2. [OUTER JOIN](#outer-join)
 
-3. [RIGHT JOIN](#right-join)
+* Left Join
 
-4. [FULL JOIN](#full-join)
+* Right Join
+
+3. [CROSS JOIN](#cross-join)
 
 ### INNER JOIN
 
@@ -1490,18 +1492,828 @@ ON table1.column_name = table2.column_name;
 
 ```
 
+Table:
+
+```
+CREATE TABLE EmployeeDetails (
+    EmployeeDetailsID int NOT NULL,
+    ID int NOT NULL,
+    Address varchar(255) NOT NULL,
+    City varchar(255) NOT NULL , 
+    PRIMARY KEY (EmployeeDetailsID),
+    FOREIGN KEY (ID) REFERENCES Employee(ID)
+);
+
+```
+
+Example:
+
+```
+SELECT EmployeeDetails.EmployeeDetailsID, employee.FirstName
+FROM EmployeeDetails
+INNER JOIN employee ON EmployeeDetails.ID = employee.ID;
+
+```
+
+Output:
+
+![image inner-join ](images/Inner-join.png)
 
 
-### LEFT JOIN
 
-### RIGHT JOIN
+### OUTER JOIN 
 
-### FULL JOIN
+**LEFT JOIN**
+
+The LEFT JOIN keyword returns all records from the left table (table1), and the matching records from the right table (table2). The result is 0 records from the right side, if there is no match
+
+Syntax:
+
+```
+SELECT column_name(s)
+FROM table1
+LEFT JOIN table2
+ON table1.column_name = table2.column_name;
+
+```
+
+Example:
+
+```
+SELECT employee.FirstName, EmployeeDetails.EmployeeDetailsID
+FROM employee
+LEFT JOIN EmployeeDetails ON employee.ID = EmployeeDetails.ID
+ORDER BY employee.FirstName;
+
+```
 
 
+Output:
+
+![image left-join ](images/Left-join.png)
+
+
+#### RIGHT JOIN
+
+The RIGHT JOIN keyword returns all records from the right table (table2), and the matching records from the left table (table1). The result is 0 records from the left side, if there is no match.
+
+Syntax:
+
+```
+SELECT column_name(s)
+FROM table1
+RIGHT JOIN table2
+ON table1.column_name = table2.column_name;
+```
+Example:
+
+```
+SELECT EmployeeDetails.EmployeeDetailsID, employee.LastName, employee.FirstName
+FROM EmployeeDetails
+RIGHT JOIN employee ON EmployeeDetails.ID = employee.ID
+ORDER BY EmployeeDetails.EmployeeDetailsID;
+
+```
+
+
+Output:
+
+![image right-join ](images/right-join.png)
+
+### CROSS JOIN
+
+The CROSS JOIN keyword returns all matching records from both tables whether the other table matches or not. So, if there are rows in "employee" that do not have matches in "EmployeeDetails", or if there are rows in "EmployeeDetails" that do not have matches in "employee", those rows will be listed as well.
+
+Syntax:
+
+```
+SELECT column_name(s)
+FROM table1
+CROSS JOIN table2;
+```
+
+Example:
+
+```
+SELECT employee.FirstName, EmployeeDetails.EmployeeDetailsID
+FROM employee
+CROSS JOIN EmployeeDetails;
+
+```
+
+Output:
+
+![image cross-join ](images/cross-join.png)
 
 ## MySQL Functions
 
+Functions in SQL Server are the database objects that contains a set of SQL statements to perform a specific task. A function accepts input parameters, perform actions, and then return the result.
+
+Different types of sql server functions are as follows
+
+1. String Functions
+
+2. Number Funtions
+
+3. Date Functions
+
+
+### String Functions
+
+SQL string functions are used primarily for string manipulation.
+
+The following table listed each of the functions with a brief description:
+
+
+| Function         | Description                                                                                       |
+|------------------|---------------------------------------------------------------------------------------------------|
+| ASCII            | Returns the ASCII value for the specific character                                                |
+| CHAR_LENGTH      | Returns the length of a string (in characters)                                                    |
+| CHARACTER_LENGTH | Returns the length of a string (in characters)                                                    |
+| CONCAT           | Adds two or more expressions together                                                             |
+| CONCAT_WS        | Adds two or more expressions together with a separator                                            |
+| FIELD            | Returns the index position of a value in a list of values                                         |
+| FIND_IN_SET      | Returns the position of a string within a list of strings                                         |
+| FORMAT           | Formats a number to a format like "#,###,###.##", rounded to a specified number of decimal places |
+| INSERT           | Inserts a string within a string at the specified position and for a certain number of characters |
+| INSTR            | Returns the position of the first occurrence of a string in another string                        |
+| LCASE            | Converts a string to lower-case                                                                   |
+| LEFT             | Extracts a number of characters from a string (starting from left)                                |
+| LENGTH           | Returns the length of a string (in bytes)                                                         |
+| LOCATE           | Returns the position of the first occurrence of a substring in a string                           |
+| LOWER            | Converts a string to lower-case                                                                   |
+| LPAD             | Left-pads a string with another string, to a certain length                                       |
+| LTRIM            | Removes leading spaces from a string                                                              |
+| MID              | Extracts a substring from a string (starting at any position)                                     |
+| POSITION         | Returns the position of the first occurrence of a substring in a string                           |
+| REPEAT           | Repeats a string as many times as specified                                                       |
+| REPLACE          | Replaces all occurrences of a substring within a string, with a new substring                     |
+| REVERSE          | Reverses a string and returns the result                                                          |
+| RIGHT            | Extracts a number of characters from a string (starting from right)                               |
+| RPAD             | Right-pads a string with another string, to a certain length                                      |
+| RTRIM            | Removes trailing spaces from a string                                                             |
+| SPACE            | Returns a string of the specified number of space characters                                      |
+| STRCMP           | Compares two strings                                                                              |
+| SUBSTR           | Extracts a substring from a string (starting at any position)                                     |
+| SUBSTRING        | Extracts a substring from a string (starting at any position)                                     |
+| SUBSTRING_INDEX  | Returns a substring of a string before a specified number of delimiter occurs                     |
+| TRIM             | Removes leading and trailing spaces from a string                                                 |
+| UCASE            | Converts a string to upper-case                                                                   |
+| UPPER            | Converts a string to upper-case                                                                   |
+
+#### ASCII
+
+* The ASCII() function returns the ASCII value for the specific character.
+
+Syntax:
+
+```
+ASCII(character)
+```
+
+Example:
+
+```
+SELECT FirstName, ASCII(FirstName) AS NumCodeOfFirstChar
+FROM employee;
+
+```
+
+Output:
+
+![image AscII ](images/Ascii.png)
+
+#### CHAR_LENGTH
+
+* The CHAR_LENGTH() function return the length of a string
+
+Syntax:
+
+```
+CHAR_LENGTH(string)
+
+```
+
+Example:
+
+```
+SELECT FirstName,CHAR_LENGTH(FirstName) AS LengthOfName
+FROM employee;
+
+```
+
+Output:
+
+![image charleng ](images/carlen.png)
+
+
+
+#### CHARACTER_LENGTH
+
+* The CHARACTER_LENGTH() function return the length of a string
+
+Syntax:
+
+```
+CHARACTER_LENGTH(string)
+
+```
+
+Example:
+
+```
+
+SELECT LastName, CHARACTER_LENGTH(LastName) AS LengthOfName
+FROM employee;
+
+```
+
+Output:
+
+![image charlength ](images/Charater-length.png)
+
+
+
+#### CONCAT
+
+* The CONCAT() function adds two or more expressions together.
+
+Syntax:
+
+```
+
+CONCAT(expression1, expression2, expression3,...)
+```
+
+Example:
+
+```
+SELECT FirstName,LastName, CONCAT(FirstName, " ", LastName) AS FullName
+FROM employee;
+
+```
+
+Output:
+
+![image CONCAT ](images/concat.png)
+
+
+#### CONCAT_WS
+
+* The CONCAT_WS() function adds two or more expressions together with a separator.
+
+Syntax:
+
+```
+CONCAT_WS(separator, expression1, expression2, expression3,...)
+```
+
+Example:
+
+```
+
+SELECT FirstName,LastName, CONCAT_WS(" ", FirstName, LastName) AS Address
+FROM employee;
+```
+
+Output:
+
+![image concatws ](images/concatws.png)
+
+
+#### FIELD
+
+* The FIELD() function returns the index position of a value in a list of values.
+
+* This function performs a case-insensitive search.
+
+Syntax:
+
+```
+FIELD(value, val1, val2, val3, ...)
+
+```
+
+Example:
+
+```
+SELECT FIELD("Q", "s", "q", "l");
+```
+
+Output:
+
+![image FIELD ](images/field.png)
+
+
+#### FIND_IN_SET
+
+* The FIND_IN_SET() function returns the position of a string within a list of strings.
+
+Syntax:
+
+```
+FIND_IN_SET(string, string_list)
+
+```
+
+Example:
+
+```
+SELECT FIND_IN_SET("q", "s,q,l");
+
+```
+
+Output:
+
+![image FIELD ](images/field_ser.png)
+
+
+#### FORMAT
+
+* The FORMAT() function formats a number to a format like "#,###,###.##", rounded to a specified number of decimal places, then it returns the result as a string.
+
+Syntax:
+
+```
+FORMAT(number, decimal_places)
+```
+Example:
+
+```
+SELECT FORMAT(25045500.5634, 0);
+
+```
+
+Output:
+
+![image FORMAT ](images/format.png)
+
+
+#### INSERT
+
+* The INSERT() function inserts a string within a string at the specified position and for a certain number of characters.
+
+Syntax:
+
+```
+INSERT(string, position, number, string2)
+
+```
+Example:
+
+```
+SELECT INSERT("google.com", 8, 3, "no");
+```
+
+Output:
+
+![image INSERT ](images/insert-goo.png)
+
+
+#### INSTR
+
+* The INSTR() function returns the position of the first occurrence of a string in another string.
+
+* This function performs a case-insensitive search.
+
+Syntax:
+
+```
+INSTR(string1, string2)
+
+```
+
+Example:
+
+```
+SELECT FirstName, INSTR(FirstName, "a")
+FROM employee;
+
+```
+
+Output:
+
+![image INSTR ](images/Inter.png)
+
+
+#### LCASE
+
+* The LCASE() function converts a string to lower-case.
+
+Syntax:
+
+```
+LCASE(text)
+
+```
+Example:
+
+```
+SELECT LCASE(FirstName) AS LowercaseFirstName
+FROM employee;
+```
+
+Output:
+
+![image LCASE ](images/Lcase.png)
+
+#### LEFT
+
+* The LEFT() function extracts a number of characters from a string (starting from left).
+
+Syntax:
+
+```
+LEFT(string, number_of_chars)
+```
+
+Example:
+
+```
+SELECT FirstName,LEFT(FirstName, 5) AS ExtractString
+FROM employee;
+```
+
+Output:
+
+![image LEFT ](images/left.png)
+
+
+#### LENGTH
+
+* The LENGTH() function returns the length of a string (in bytes).
+
+Syntax:
+
+```
+LENGTH(string)
+
+```
+Example:
+
+```
+SELECT FirstName,LENGTH(FirstName) AS LengthOfName
+FROM employee;
+```
+
+Output:
+
+![image length ](images/length.png)
+
+
+#### LOCATE
+
+* The LOCATE() function returns the position of the first occurrence of a substring in a string.
+
+* If the substring is not found within the original string, this function returns 0.
+
+* This function performs a case-insensitive search.
+
+Syntax:
+
+```
+LOCATE(substring, string, start)
+
+```
+Example:
+
+```
+SELECT FirstName,LOCATE("a", FirstName)
+FROM employee;
+```
+
+Output:
+
+![image locate ](images/locate.png)
+
+
+#### LPAD
+
+* The LPAD() function left-pads a string with another string, to a certain length.
+
+Syntax:
+
+```
+LPAD(string, length, lpad_string)
+```
+
+Example:
+
+```
+SELECT LPAD(FirstName, 30, "ABC") AS LeftPadFirstName
+FROM employee;
+```
+
+Output:
+
+![image LPAD ](images/LPad.png)
+
+#### LTRIM
+
+* The LTRIM() function removes leading spaces from a string.
+
+Syntax:
+
+```
+LTRIM(string)
+```
+Example:
+
+```
+SELECT LTRIM("FirstName") AS LeftTrimmedString;
+```
+
+Output:
+
+![image LTRIM ](images/ltrim.png)
+
+
+#### MID
+
+* The MID() function extracts a substring from a string (starting at any position).
+
+Syntax:
+
+```
+MID(string, start, length)
+
+```
+
+Example:
+
+```
+SELECT FirstName,MID(FirstName, 2, 5) AS ExtractString
+FROM employee;
+```
+
+Output:
+
+![image MID ](images/mid.png)
+
+#### POSITION
+
+* The POSITION() function returns the position of the first occurrence of a substring in a string.
+
+* If the substring is not found within the original string, this function returns 0.
+
+Syntax:
+
+```
+POSITION(substring IN string)
+
+```
+
+Example:
+
+```
+SELECT FirstName,POSITION("a" IN FirstName)
+FROM employee;
+```
+
+Output:
+
+![image POSITION ](images/position.png)
+
+#### REPEAT
+
+* The REPEAT() function repeats a string as many times as specified.
+
+Syntax:
+
+```
+REPEAT(string, number)
+```
+
+Example:
+
+```
+SELECT FirstName,REPEAT(FirstName, 2)
+FROM employee;
+```
+
+Output:
+
+![image REPEAT ](images/repeat.png)
+
+#### REPLACE
+
+* The REPLACE() function replaces all occurrences of a substring within a string, with a new substring.
+
+Syntax:
+
+```
+REPLACE(string, substring, new_string)
+```
+
+Example:
+
+```
+SELECT FirstName,REPLACE(FirstName, "a", "m") from employee;
+```
+
+Output:
+
+![image REPLACE ](images/Replace.png)
+
+
+#### REVERSE
+
+* The REVERSE() function reverses a string and returns the result
+
+Syntax:
+
+```
+REVERSE(string)
+```
+
+Example:
+
+```
+SELECT FirstName,REVERSE(FirstName) from employee;
+```
+
+Output:
+
+![image REVERSE ](images/reverse.png)
+
+
+#### RIGHT
+
+* The RIGHT() function extracts a number of characters from a string (starting from right).
+
+Syntax:
+
+```
+RIGHT(string, number_of_chars)
+```
+
+Example:
+
+```
+SELECT FirstName, RIGHT(FirstName, 5) AS ExtractString
+FROM employee;
+```
+
+Output:
+
+![image RIGHT ](images/right.png)
+
+
+#### RPAD
+
+* The RPAD() function right-pads a string with another string, to a certain length.
+
+Syntax:
+
+```
+RPAD(string, length, rpad_string)
+```
+
+Example:
+
+```
+SELECT FirstName,RPAD(FirstName, 30, "ABC") AS RightPadFirstName
+FROM employee;
+```
+
+Output:
+
+![image RPAD ](images/Rpad.png)
+
+#### RTRIM
+
+* The RTRIM() function removes trailing spaces from a string
+
+Syntax:
+
+```
+RTRIM(string)
+
+```
+
+Example:
+
+```
+
+SELECT firstname,RTRIM(firstname) AS RightTrimmedString from employee;
+```
+
+Output:
+
+![image RTRIM ](images/rtrim.png)
+
+
+#### SPACE
+
+* The SPACE() function returns a string of the specified number of space characters.
+
+Syntax:
+
+```
+SPACE(number)
+```
+
+Example:
+
+```
+SELECT SPACE(10);
+```
+
+Output:
+
+![image SPACE ](images/space.png)
+
+
+#### STRCMP
+
+* The STRCMP() function compares two strings.
+
+Syntax:
+
+```
+STRCMP(string1, string2)
+```
+
+Example:
+
+```
+SELECT FirstName,LastName,STRCMP(FirstName, LastName) from employee;
+
+```
+
+Output:
+
+![image STRCMP ](images/strcom.png)
+
+
+#### SUBSTR
+
+* The SUBSTR() function extracts a substring from a string (starting at any position).
+
+Syntax:
+
+```
+SUBSTR(string, start, length)
+
+or
+
+SUBSTR(string FROM start FOR length)
+
+```
+
+Example:
+
+```
+SELECT FirstName,SUBSTR(FirstName, 2, 5) AS ExtractString
+FROM employee;
+```
+
+Output:
+
+![image SUBSTR ](images/substr.png)
+
+
+#### SUBSTRING_INDEX
+
+* The SUBSTRING_INDEX() function returns a substring of a string before a specified number of delimiter occurs.
+
+Syntax:
+
+```
+SUBSTRING_INDEX(string, delimiter, number)
+```
+
+Example:
+
+```
+SELECT LastName,SUBSTRING_INDEX(LastName, ".", 1) AS ExtractString
+FROM employee;
+```
+
+Output:
+
+![image SUBSTRING_INDEX ](images/sub-index.png)
+
+#### UCASE
+
+* The UCASE() function converts a string to upper-case.
+
+Syntax:
+
+```
+UCASE(text)
+```
+
+Example:
+
+```
+SELECT FirstName,UCASE(FirstName) AS UppercaseFirstName
+FROM employee;
+```
+
+Output:
+
+![image UCASE ](images/ucase.png)
 
 ## MySQL Views
 
