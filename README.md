@@ -799,16 +799,709 @@ The DCL statements are
 
 ### Grant Command
 
+* It is used to provide any user access privileges or other privileges for the database
+
+Syntax:
+
+```
+/* Grant read only to a User */
+GRANT SELECT ON table_name TO user_name;
+
+/* Grant insert,update,delete & select function to a user */
+GRANT INSERT, UPDATE, DELETE, SELECT ON table_name TO user_name;
+
+```
+
+Example:
+
+```
+
+CREATE USER john@localhost IDENTIFIED BY 'jtp12345';
+
+GRANT ALL ON employee.* TO john@localhost;
+
+```
+
+
+Output:
+
+![image grant ](images/grant.png)
+
+
 ### Revoke Command
+
+* It is used to take back the privileges from any user, use the REVOKE command.
+
+Syntax:
+
+```
+REVOKE privilege_name(s)   
+ON object   
+FROM user_account_name;  
+
+```
+Example:
+
+```
+REVOKE ALL, GRANT OPTION FROM john@localhost;  
+
+```
+
+Output:
+
+![image revoke ](images/revoke.png)
 
 
 ## Transaction Control Lanaguage(TCL)
 
+Database Transactions:
+
+A transaction begins with the first statement is encounterd and ends when one of the following occurs.This command is used to manage changes to DML statements.
+
+* A commit or rollback statement is issued.
+
+* A DDL statement, such as create is issued.
+
+* A DCL statement is issued.
+
+* The system crashes.
+
+* After one transaction ends, the next executable SQL statement automatically starts the next transaction.
+
+* A DDL statement or a DCL statement is automatically committed and therefore implicitly ends a transaction.
+
+You can control the logic of transactions by using the
+
+1. [Commit](#commit)
+
+2. [Savepoint](#savepoint)
+
+3. [Rollback](#rollback)
+
+### Commit
+
+* COMMIT command is used to permanently save any transaction into the database.
+
+* When we use any DML command like INSERT, UPDATE or DELETE, the changes made by these commands are not permanent, until the current session is closed, the changes made by these commands can be rolled back.
+
+* To avoid that, we use the COMMIT command to mark the changes as permanent.
+
+Syntax:
+
+```
+COMMIT;
+
+```
+
+Example:
+
+```
+COMMIT;
+```
+
+Output:
+
+![image commit ](images/commit.png)
+
+
+### Savepoint
+
+*	SAVEPOINT command is used to temporarily save a transaction so that you can rollback to that point whenever required.
+
+Syntax:
+
+```
+	SAVEPOINT savepoint_name;
+
+```
+
+Example:
+
+```
+
+	SAVEPOINT transactionA;
+
+
+```
+Output:
+
+![image savepoint ](images/savepoint.png)
+
+
+
+### Rollback
+
+* This command restores the database to last commited state. It is also used with SAVEPOINT command to jump to a savepoint in an ongoing transaction.
+* If we have used the UPDATE command to make some changes into the database, and realise that those changes were not required, then we can use the ROLLBACK command to rollback those changes, if they were not commited using the COMMIT command.
+
+Syntax:
+
+```
+ROLLBACK savepoint_name;
+```
+
+Example:
+
+```
+ROLLBACK to transactionA;
+
+```
+Output:
+
+![image rollback ](images/rollback.png)
+
+
+### Example for Commit, Savepoint and RollBack
+
+```
+create table student(id INT,name VARCHAR(20));
+start transaction;
+select * from student;
+insert into student values(10,'Dravid');
+savepoint transactionInsert;
+insert into student values(20,'Sachin');
+insert into student values(30,'Dhoni');
+insert into student values(40,'kohli');
+select * from student;
+savepoint transactionDelete;
+delete from student where id=10;
+delete from student where id=20;
+select * from student;
+rollback to transactionDelete;
+select * from student;
+rollback to transactionDelete;
+select * from student;
+rollback;
+select * from student;
+
+```
+Output:
+
+![image com-sav-rol ](images/com-sav-rol.png)
+
+
+
 ## Data Query/Retrieval Language (DQL/DRL)
+
+SELECT statement is used to retrieve the information from database using select statement you can do the following
+
+* Projection: It is used to choose columns in a table that you want returned by the query.
+
+* Selection: It is used to choose rows in a table that you want returned by your query.
+
+* Joining: You can choose the join capability in SQL to bring together data that is stored in different tables by creating a link between them.
+
+Syntax:
+
+```
+SELECT column1, column2, ...FROM table_name;
+
+/* select all the fields available in the table */
+SELECT * FROM table_name;
+
+```
+
+Example:
+
+```
+SELECT * FROM employee;
+
+SELECT Id,first_name,last_name FROM employee.employees;
+
+```
+
+output:
+
+![image select ](images/Select.png)
+
+### Arithmetic Expressions
+
+* Create expressions with number and date data by using arithematic operators
+
+* Operator Precedence : * , / , + , -
+
+* If the operators within an expression are of same priority then evaluation is done from left to right.
+
+Example:
+
+```
+SELECT ID,FirstName,LastName,salary,(20*salary-100)/2 FROM employee;
+
+```
+
+output:
+
+![image Arithmetic ](images/Arithmetic.png)
+
+### column aliases
+
+* Renames column heading
+
+* It is useful for calculations
+
+* Immediately followed by the column name, there can also be optional keyword AS keyword betweeen the column name and alias.
+
+* Enclose alias name in double quotations if it contains a special characters such as # or $ or is case sensitive.
+
+* Column aliases can be used in both select clause and the order by clause you cannot use column aliases in where clause.
+
+Syntax:
+
+```
+SELECT column_name AS alias_name
+FROM table_name;
+
+```
+Example:
+
+```
+SELECT ID AS EmployeeID, FirstName  AS EmployeeName
+FROM employee;
+```
+
+Output:
+
+![image Aliases ](images/alias.png)
+
+### Clause
+
+1. [DISTINCT](#distinct)
+
+2. [WHERE](#where)
+
+3. [ORDER BY](#order-by)
+
+4. [GROUP BY](#group-by)
+
+5. [HAVING](#having)
+
+#### DISTINCT
+
+* The SQL DISTINCT keyword is used in conjunction with the SELECT statement to eliminate all the duplicate records and fetching only unique records.
+
+* There may be a situation when you have multiple duplicate records in a table. While fetching such records, it makes more sense to fetch only those unique records instead of fetching duplicate records and can be used for more than one column
+
+* Distinct keyword should be used immediately after the select keyword.
+
+* Distinct can also be used with multiple columns and it affects all the columns selected
+
+Syntax
+
+```
+SELECT DISTINCT column1, column2,.....columnN 
+FROM table_name  WHERE [condition]
+```
+
+Example:
+
+```
+SELECT DISTINCT FirstName  
+FROM employee; 
+
+```
+
+Output:
+
+![image distinct ](images/distinct.png)
+
+#### WHERE
+
+* We restrict the rows returned by using the WHERE clause.
+
+* Where restricts the query to rows that meets the condition
+
+* Condition is composed of column names ,expressions constants ,and a comparison operator.
+
+* Where consists of three elements.
+
+1. column name 
+
+2. comparison condition 
+
+3. column name, constant or list of values
+
+* Character strings and date values are enclosed in single quotation marks.
+
+* The WHERE clause is not only used in the SELECT statement, but it is also used in the UPDATE, DELETE statement, etc.,
+
+
+Syntax:
+
+```	
+	SELECT column1, column2,.....columnN 
+FROM table_name 
+WHERE [condition]
+
+```
+
+Example:
+
+```
+SELECT * FROM employee
+WHERE ID = 1;
+
+```
+
+
+Output:
+
+![image where ](images/where.png)
+
+
+#### ORDER BY
+
+* We sort rows by using order by clause .
+
+1. ASC: ascending order , default
+
+2. DSC: descending order.
+
+* The order by clause comes last in the select statement.
+
+* Order by clause is executed last in the query execution .it is placed last unless the for update clause is used.
+
+* Default sorting is ascending
+
+* Numeric values are displayed with lowest values first ex: 1-999
+
+* Date values are displayed with earliest value first ex: 01-jan-92 before 01-jan-95.
+
+* Character values are displayed in alphabetic order ex: A-Z.
+
+* Null values are displayed last for ascending sequences and first for descending sequences.
+
+* We can also sort by a column number in the select list.
+
+Syntax:
+
+```
+SELECT column1, column2, ...
+FROM table_name
+ORDER BY column1, column2, ... ASC|DESC;
+
+```
+
+Example:
+
+```
+SELECT * FROM employee
+ORDER BY salary;
+
+```
+
+Output:
+
+![image order by ](images/order-by.png)
+
+
+##### ORDER BY DESC
+
+
+Syntax:
+
+```
+SELECT column1, column2, ...
+FROM table_name
+ORDER BY column1, column2, ... ASC|DESC;
+
+```
+
+Example:
+
+```
+
+SELECT * FROM employee
+ORDER BY salary DESC;
+
+```
+
+Output:
+
+![image order by Desc ](images/Desc.png)
+
+
+#### GROUP BY
+
+* We use GROUP BY clause to divide the rows in a table into groups.
+
+* If you include a group function in a select statement, you cannot select individual results as well ,unless the individual column appears in the GROUP BY clause.
+
+* Using WHERE clause you can include rows before dividing them into groups.
+
+* You must include the columns in the GROUP BY clause.
+
+* You cannot use a column alias in the GROUP BY clause.
+
+* By default, rows are sorted by ascending order of the columns included in the group by list. You can override this by using ORDER BY clause.
+
+* You cannot use WHERE clause to restrict groups
+
+Syntax:
+
+```
+SELECT column_name(s)
+FROM table_name
+WHERE condition
+GROUP BY column_name(s)
+ORDER BY column_name(s);
+
+```
+
+Example:
+
+```
+SELECT COUNT(ID), FirstName
+FROM employee
+GROUP BY FirstName
+ORDER BY COUNT(ID) DESC;
+
+```
+Output:
+
+![image Group by Desc ](images/group-by.png)
+
+
+#### HAVING
+
+* The HAVING Clause enables you to specify conditions that filter which group results appear in the results.
+
+* The WHERE clause places conditions on the selected columns, whereas the HAVING clause places conditions on groups created by the GROUP BY clause.
+
+* The HAVING clause must follow the GROUP BY clause in a query and must also precede the ORDER BY clause if used.
+
+Syntax:
+
+```
+SELECT column_name(s)
+FROM table_name
+WHERE condition
+GROUP BY column_name(s)
+HAVING condition
+ORDER BY column_name(s);
+
+```
+
+Example:
+
+```
+SELECT COUNT(ID), salary
+FROM employee
+GROUP BY salary
+HAVING COUNT(ID) > 1
+ORDER BY COUNT(ID) DESC;
+
+```
+Output:
+
+![image having ](images/Having.png)
+
+### Logical conditions
+
+<br>
+
+| **_Operator_**        | **_Meaning_**                                                 |
+|-----------------------|---------------------------------------------------------------|
+|     AND               |     Returns true if both component conditions   are true      |
+|     OR                |     Returns true if either component conditions   are true    |
+|     NOT               |     Returns true if false, Returns false if   true            |
+
+<br>
+
+1. AND
+
+Example:
+
+```
+
+SELECT * FROM employee
+WHERE FirstName = "nick" AND salary = 2500;
+
+```
+
+Output:
+
+![image and ](images/and.png)
+
+2. OR
+
+Example:
+
+```
+SELECT * FROM employee
+WHERE FirstName = "nick" OR salary = 2500;
+
+```
+
+Output:
+
+![image OR ](images/OR.png)
+
+3. NOT
+
+Example:
+
+```
+SELECT * FROM employee
+WHERE FirstName NOT LIKE 's%';
+
+```
+
+Output:
+
+![image Not ](images/NOT.png)
+
+### Comparision conditions
+
+
+| **_Operator_**  | **_Meaning_**                   |
+|-----------------|---------------------------------|
+|     =           |     Equal to                    |
+|      >          |     Greater than                |
+|     >=          |     Greater than or Equal to    |
+|     <           |     Less than                   |
+|     <=          |     Less than or Equal to       |
+|     <>,!=,^=    |     Not equal to                |
+
+Example:
+
+```
+SELECT * FROM employee
+WHERE salary > 2500;
+
+```
+
+Output:
+
+![image greater-then ](images/greater-than.png)
+
+### Other Comparision operator
+
+* [**BETWEEN AND**](#between-and)
+* [**IN**](#in)
+* [**LIKE**](#like)
+* [**IS NULL**](#is-null)
+
+#### BETWEEN AND
+
+* BETWEEN and AND are actually translated by the sql server server to a pair of AND conditions (a>=lower limit) AND (a⇐ higher limit).
+
+* Using BETWEEN AND has no performance benefits, and it is used logical simplicity.
+
+Example:
+
+```
+SELECT * FROM employee
+WHERE salary BETWEEN 2000 AND 25000;
+
+```
+
+Output:
+
+![image between ](images/between.png)
+
+
+#### IN
+
+* It is used to test the values in a list. IN condition is also known as member ship condition
+
+* If characters or dates are used in a list they must be enclosed in a single quotation marks .
+
+* IN is actually translated by a sql server to a set of OR conditions a=value1 or a= value2 or a=value3.
+
+* Using IN has no performance benefits ,and is used for logical simplicity.
+
+Example:
+
+```
+SELECT * FROM employee
+WHERE City IN ('Paris','London');
+
+```
+
+Output:
+
+![image IN ](images/IN.png)
+
+
+#### LIKE
+
+* It is used for performing wildcard searches of valid search string values.
+
+* Search conditions can contain either literal characters or numbers .
+
+* % denotes zero or many characters .
+
+* _ denotes one character or any single character.
+
+
+Example:
+
+```
+SELECT * FROM employee
+WHERE FirstName LIKE 'e%';
+
+```
+
+Output:
+
+![image like ](images/like.png)
+
+
+#### IS NULL
+
+Example
+
+```
+SELECT FirstName,LastName,salary,City FROM employee WHERE salary IS NULL;
+
+SELECT FirstName,LastName,salary,City FROM employee WHERE salary IS  NOT NULL;
+
+```
+
+Output:
+
+![image not-null ](images/not-nu.png)
+
+## Joins
+
+SQL Server (Transact-SQL) JOINS are used to retrieve data from multiple tables. A SQL Server JOIN is performed whenever two or more tables are joined in a SQL statement.
+
+There are 4 different types of SQL Server joins:
+
+1. [INNER JOIN](#inner-join)
+
+2. [LEFT JOIN](#left-join)
+
+3. [RIGHT JOIN](#right-join)
+
+4. [FULL JOIN](#full-join)
+
+### INNER JOIN
+
+The INNER JOIN keyword selects records that have matching values in both tables.
+
+Syntax:
+
+```
+SELECT column_name(s)
+FROM table1
+INNER JOIN table2
+ON table1.column_name = table2.column_name;
+
+```
+
+
+
+### LEFT JOIN
+
+### RIGHT JOIN
+
+### FULL JOIN
+
+
 
 ## MySQL Functions
 
-## MySQL Sub Query
 
 ## MySQL Views
 
