@@ -2315,6 +2315,222 @@ Output:
 
 ![image UCASE ](images/ucase.png)
 
+
+### NUMERIC FUNCTIONS
+
+
+* SQL numeric functions are used primarily for numeric manipulation and/or mathematical calculations
+
+
+| Function | Description                                                                                 |
+|----------|---------------------------------------------------------------------------------------------|
+| AVG      | Returns the average value of an expression                                                  |
+| CEIL     | Returns the smallest integer value that is >= to a number                                   |
+| COUNT    | Returns the number of records returned by a select query                                    |
+| FLOOR    | Returns the largest integer value that is <= to a number                                    |
+| GREATEST | Returns the greatest value of the list of arguments                                         |
+| MAX      | Returns the maximum value in a set of values                                                |
+| MIN      | Returns the minimum value in a set of values                                                |
+| POWER    | Returns the value of a number raised to the power of another number                         |
+| SUM      | Calculates the sum of a set of values                                                       |
+
+
+#### AVG
+
+* The AVG() function returns the average value of an expression.
+
+Syntax:
+
+```
+AVG(expression)
+```
+
+Example:
+
+```
+SELECT * FROM employee
+WHERE salary > (SELECT AVG(salary) FROM employee);
+
+```
+Output:
+
+![image AVG ](images/avg.png)
+
+#### CEIL
+
+* The CEIL() function returns the smallest integer value that is bigger than or equal to a number.
+
+Syntax:
+
+```
+CEIL(number)
+```
+
+Example:
+
+```
+SELECT FirstName,salary/0.3,CEIL(salary/0.3) FROM employee;
+```
+
+Output:
+
+![image Ceil ](images/ceil.png)
+
+
+#### COUNT
+
+* The COUNT() function returns the number of records returned by a select query
+
+Syntax:
+
+```
+COUNT(expression)
+
+```
+
+Example:
+
+```
+SELECT COUNT(ID) AS NumberOfEmployees FROM employee;
+
+```
+
+Output:
+
+![image count ](images/count.png)
+
+#### FLOOR
+
+
+* The FLOOR() function returns the largest integer value that is smaller than or equal to a number.
+
+Syntax:
+
+```
+FLOOR(number)
+```
+
+Example:
+
+```
+SELECT FirstName,salary/0.3,FLOOR(salary/0.3) FROM employee;
+
+```
+
+Output:
+
+![image floor ](images/floor.png)
+
+
+#### GREATEST
+
+* The GREATEST() function returns the greatest value of the list of arguments.
+
+Syntax:
+
+```
+GREATEST(arg1, arg2, arg3, ...)
+```
+
+Example:
+
+```
+SELECT GREATEST(10,20,-5,-1.6,9);
+
+```
+
+
+Output:
+
+![image greatest ](images/greater.png)
+
+
+#### MAX
+
+* The MAX() function returns the maximum value in a set of values.
+
+Syntax:
+
+```
+MAX(expression)
+```
+Example:
+
+```
+SELECT max(salary) AS HigestPay FROM employee
+
+```
+Output:
+
+![image max ](images/max.png)
+
+#### min
+
+* The MIN() function returns the minimum value in a set of values.
+
+Syntax:
+
+```
+MIN(expression)
+
+```
+
+Example:
+
+```
+SELECT min(salary) AS AveragePay FROM employee;
+
+```
+
+Output:
+
+![image min ](images/min.png)
+
+#### POWER
+
+* The POWER() function returns the value of a number raised to the power of another number.
+
+Syntax:
+
+```
+POWER(x, y)
+
+```
+Example:
+
+```
+SELECT FirstName,salary,POW(salary,2) FROM employee;
+
+```
+
+Output:
+
+![image power ](images/power.png)
+
+
+#### SUM
+
+* The SUM() function calculates the sum of a set of values.
+
+Syntax:
+
+```
+SUM(expression)
+
+```
+
+Example:
+
+```
+SELECT sum(salary) AS EmployeeSalary FROM employee;
+
+```
+Output:
+
+![image sum ](images/sum.png)
+
+
+
 ## MySQL Views
 
 ## MySQL Stored Procedure 
