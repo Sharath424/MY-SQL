@@ -3835,7 +3835,13 @@ It is used to pass a parameter as output. Its value can be changed inside the st
 
 It is a combination of IN and OUT parameters. It means the calling program can pass the argument, and the procedure can modify the INOUT parameter, and then passes the new value back to the calling program.
 
-1. Procedure without Parameter
+1. [Procedure without Parameter](#procedure-without-parameter)
+
+2. [Procedures with IN Parameter](#procedures-with-in-parameter)
+
+3. [Procedures with OUT Parameter](#procedures-with-inout-parameter)
+
+4. [Procedures with INOUT Parameter](#procedures-with-out-parameter)
 
 ##### Procedure without Parameter
 
@@ -3984,3 +3990,124 @@ DROP PROCEDURE display_salary;
 Output:
 
 ![image drop-proce](images/drop-proce.png)
+
+## MySQL CURSORS
+
+* A database cursor is a control structure that enables traversal over the records in a database. Cursors are used by database programmers to process individual rows returned by database system queries. 
+
+* Cursors enable manipulation of whole result sets at once. In this scenario, a cursor enables the rows in a result set to be processed sequentially. 
+
+* In SQL procedures, a cursor makes it possible to define a result set (a set of data rows) and perform complex logic on a row by row basis. 
+
+* MySQL supports cursors inside stored programs. The syntax is as in embedded SQL. Cursors have these properties
+
+1. Asensitive: The server may or may not make a copy of its result table
+
+2. Read only: Not updatable
+
+3. Nonscrollable: Can be traversed only in one direction and cannot skip rows
+
+* To use cursors in MySQL procedures, you need to do the following:
+
+1. Declare a cursor. 
+
+2. Open a cursor. 
+
+3. Fetch the data into variables. 
+
+4. Close the cursor when done.
+
+### CURSOR PROCEDURE
+
+**Declare Cursor**
+
+The following statement declares a cursor and associates it with a SELECT statement that retrieves the rows to be traversed by the cursor.
+
+Syntax:
+
+```
+DECLARE cursor_name CURSOR FOR  
+Select statement;  
+```
+
+**Open Cursor**
+
+
+After declaring the cursor the next step is to open the cursor using open statement.
+
+Syntax:
+
+```
+Open cursor_name; 
+
+```
+
+**Fetch Cursor**
+
+* After declaring and opening the cursor, the next step is to fetch the cursor. It is used to fetch the row or the column
+
+* This statement fetches the next row for the SELECT statement associated with the specified cursor (which must be open) and advances the cursor pointer.
+
+* If a row exists, the fetched columns are stored in the named variables. The number of columns retrieved by the SELECT statement must match the number of output variables specified in the FETCH statement.
+
+
+Syntax:
+
+```
+FETCH [ NEXT [ FROM ] ] cursor_name INTO variable_list; 
+
+```
+
+**Close Cursor**
+
+This statement closes a previously opened cursor. An error occurs if the cursor is not open.
+
+Syntax:
+
+```
+Close cursor_name; 
+```
+
+### Example
+
+```
+delimiter $$
+create procedure spCursor()
+begin
+	declare v_name varchar(20);
+    declare salary INT;
+    declare flag int default 0;
+    declare sample cursor for select FirstName,salary from employee where ID=6;
+    declare continue handler for NOT FOUND set flag = 1;
+    open sample;
+    getEmp : loop
+		fetch sample into v_name,salary;
+        if flag=1 then
+			leave getEmp;
+		end if;
+        select concat(v_name,salary);
+	end loop getEmp;
+    close sample;
+end$$
+
+delimiter ;
+
+call spCursor();
+
+Set @a=6;
+Call spCursor(@a);
+Select @a;
+
+
+```
+
+Output:
+
+<br>
+![image cursor](images/cursor1.png)
+
+<br>
+
+![image cursor](images/cursor.png)
+
+<br>
