@@ -1605,6 +1605,126 @@ Output:
 
 ![image cross-join ](images/cross-join.png)
 
+
+## MySQL Views
+
+* View is a data object which does not contain any data. 
+
+* Contents of the view are the resultant of a base table. They are operated just like base table but they don’t contain any data of their own. 
+
+* The difference between a view and a table is that views are definitions built on top of other tables (or views).
+
+* If data is changed in the underlying table, the same change is reflected in the view. 
+
+* A view can be built on top of a single or multiple tables.
+
+* Views can have column names and expressions.
+
+* You can use any clauses in views.
+
+* Views can be used in INSERT/UPDATE/DELETE.
+
+* Views can contain expressions in the select list.
+
+View Commands are:
+
+1. [Create View](#create-view)
+
+2. [Alter View](#alter-view)
+
+3. [Drop View](#drop-view)
+
+### CREATE VIEW
+
+* Following statements create a view. 
+
+* By default, a view is associated with the default database (currently used the database). 
+
+* To associate the view with a given database, specify the name as database_name. view_name when you create it.
+
+Syntax:
+
+```
+CREATE VIEW view_name AS
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+```
+
+Example:
+
+```
+CREATE VIEW sampleView2 
+AS select ID,FirstName,salary from employee;
+
+SELECT * FROM sampleView2;
+```
+
+Output:
+
+![image create-view ](images/create-view.png)
+
+### ALTER VIEW
+
+* ALTER VIEW statement changes the definition of an existing view. The syntax of the statement is similar to CREATE VIEW.
+
+Syntax:
+
+```
+ALTER VIEW [database_name].view_name [(column_list)]
+AS select_statement
+
+or
+
+CREATE OR REPLACE VIEW view_name AS
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+
+```
+Example:
+
+```
+DESCRIBE sampleView2;
+ALTER VIEW sampleView2 AS select * from employee;
+DESCRIBE sampleView2;
+
+or
+
+DESCRIBE sampleView2;
+CREATE or REPLACE VIEW sampleView2 AS select ID,FirstName,salary from employee;
+DESCRIBE sampleView2;
+
+```
+
+Output:
+
+![image Alter-view ](images/alter-view.png)
+
+### DROP VIEW
+
+
+* DROP VIEW statement is used to remove one or more views. To drop a view, you must have DROP privilege for each view. 
+
+Syntax:
+
+```
+DROP VIEW view_name;
+
+```
+
+Example:
+
+```
+DROP VIEW sampleView2;
+
+```
+Output:
+
+![image Drop-view ](images/drop-view.png)
+
+
+
 ## MySQL Functions
 
 Functions in SQL Server are the database objects that contains a set of SQL statements to perform a specific task. A function accepts input parameters, perform actions, and then return the result.
@@ -1613,10 +1733,11 @@ Different types of sql server functions are as follows
 
 1. String Functions
 
-2. Number Funtions
+2. Number Functions
 
 3. Date Functions
 
+4. Control Flow Functions
 
 ### String Functions
 
@@ -2315,6 +2436,1678 @@ Output:
 
 ![image UCASE ](images/ucase.png)
 
-## MySQL Views
+
+### NUMERIC FUNCTIONS
+
+
+* SQL numeric functions are used primarily for numeric manipulation and/or mathematical calculations
+
+
+| Function | Description                                                                                 |
+|----------|---------------------------------------------------------------------------------------------|
+| AVG      | Returns the average value of an expression                                                  |
+| CEIL     | Returns the smallest integer value that is >= to a number                                   |
+| COUNT    | Returns the number of records returned by a select query                                    |
+| FLOOR    | Returns the largest integer value that is <= to a number                                    |
+| GREATEST | Returns the greatest value of the list of arguments                                         |
+| MAX      | Returns the maximum value in a set of values                                                |
+| MIN      | Returns the minimum value in a set of values                                                |
+| POWER    | Returns the value of a number raised to the power of another number                         |
+| SUM      | Calculates the sum of a set of values                                                       |
+
+
+#### AVG
+
+* The AVG() function returns the average value of an expression.
+
+Syntax:
+
+```
+AVG(expression)
+```
+
+Example:
+
+```
+SELECT * FROM employee
+WHERE salary > (SELECT AVG(salary) FROM employee);
+
+```
+Output:
+
+![image AVG ](images/avg.png)
+
+#### CEIL
+
+* The CEIL() function returns the smallest integer value that is bigger than or equal to a number.
+
+Syntax:
+
+```
+CEIL(number)
+```
+
+Example:
+
+```
+SELECT FirstName,salary/0.3,CEIL(salary/0.3) FROM employee;
+```
+
+Output:
+
+![image Ceil ](images/ceil.png)
+
+
+#### COUNT
+
+* The COUNT() function returns the number of records returned by a select query
+
+Syntax:
+
+```
+COUNT(expression)
+
+```
+
+Example:
+
+```
+SELECT COUNT(ID) AS NumberOfEmployees FROM employee;
+
+```
+
+Output:
+
+![image count ](images/count.png)
+
+#### FLOOR
+
+
+* The FLOOR() function returns the largest integer value that is smaller than or equal to a number.
+
+Syntax:
+
+```
+FLOOR(number)
+```
+
+Example:
+
+```
+SELECT FirstName,salary/0.3,FLOOR(salary/0.3) FROM employee;
+
+```
+
+Output:
+
+![image floor ](images/floor.png)
+
+
+#### GREATEST
+
+* The GREATEST() function returns the greatest value of the list of arguments.
+
+Syntax:
+
+```
+GREATEST(arg1, arg2, arg3, ...)
+```
+
+Example:
+
+```
+SELECT GREATEST(10,20,-5,-1.6,9);
+
+```
+
+
+Output:
+
+![image greatest ](images/greater.png)
+
+
+#### MAX
+
+* The MAX() function returns the maximum value in a set of values.
+
+Syntax:
+
+```
+MAX(expression)
+```
+Example:
+
+```
+SELECT max(salary) AS HigestPay FROM employee
+
+```
+Output:
+
+![image max ](images/max.png)
+
+#### min
+
+* The MIN() function returns the minimum value in a set of values.
+
+Syntax:
+
+```
+MIN(expression)
+
+```
+
+Example:
+
+```
+SELECT min(salary) AS AveragePay FROM employee;
+
+```
+
+Output:
+
+![image min ](images/min.png)
+
+#### POWER
+
+* The POWER() function returns the value of a number raised to the power of another number.
+
+Syntax:
+
+```
+POWER(x, y)
+
+```
+Example:
+
+```
+SELECT FirstName,salary,POW(salary,2) FROM employee;
+
+```
+
+Output:
+
+![image power ](images/power.png)
+
+
+#### SUM
+
+* The SUM() function calculates the sum of a set of values.
+
+Syntax:
+
+```
+SUM(expression)
+
+```
+
+Example:
+
+```
+SELECT sum(salary) AS EmployeeSalary FROM employee;
+
+```
+Output:
+
+![image sum ](images/sum.png)
+
+
+### Date Functions
+
+| Function          | Description                                                                  |
+|-------------------|------------------------------------------------------------------------------|
+| ADDDATE           | Adds a time/date interval to a date and then returns the date                |
+| ADDTIME           | Adds a time interval to a time/datetime and then returns the time/datetime   |
+| CURDATE           | Returns the current date                                                     |
+| CURRENT_DATE      | Returns the current date                                                     |
+| CURRENT_TIME      | Returns the current time                                                     |
+| CURRENT_TIMESTAMP | Returns the current date and time                                            |
+| CURTIME           | Returns the current time                                                     |
+| DATE              | Extracts the date part from a datetime expression                            |
+| DATEDIFF          | Returns the number of days between two date values                           |
+| DATE_ADD          | Adds a time/date interval to a date and then returns the date                |
+| DATE_FORMAT       | Formats a date                                                               |
+| DATE_SUB          | Subtracts a time/date interval from a date and then returns the date         |
+| DAY               | Returns the day of the month for a given date                                |
+| DAYNAME           | Returns the weekday name for a given date                                    |
+| DAYOFMONTH        | Returns the day of the month for a given date                                |
+| DAYOFWEEK         | Returns the weekday index for a given date                                   |
+| DAYOFYEAR         | Returns the day of the year for a given date                                 |
+| EXTRACT           | Extracts a part from a given date                                            |
+| FROM_DAYS         | Returns a date from a numeric datevalue                                      |
+| HOUR              | Returns the hour part for a given date                                       |
+| LAST_DAY          | Extracts the last day of the month for a given date                          |
+| LOCALTIME         | Returns the current date and time                                            |
+| LOCALTIMESTAMP    | Returns the current date and time                                            |
+| MAKEDATE          | Creates and returns a date based on a year and a number of days value        |
+| MAKETIME          | Creates and returns a time based on an hour, minute, and second value        |
+| MICROSECOND       | Returns the microsecond part of a time/datetime                              |
+| MINUTE            | Returns the minute part of a time/datetime                                   |
+| MONTH             | Returns the month part for a given date                                      |
+| MONTHNAME         | Returns the name of the month for a given date                               |
+| NOW               | Returns the current date and time                                            |
+| PERIOD_ADD        | Adds a specified number of months to a period                                |
+| PERIOD_DIFF       | Returns the difference between two periods                                   |
+| QUARTER           | Returns the quarter of the year for a given date value                       |
+| SECOND            | Returns the seconds part of a time/datetime                                  |
+| SEC_TO_TIME       | Returns a time value based on the specified seconds                          |
+| STR_TO_DATE       | Returns a date based on a string and a format                                |
+| SUBDATE           | Subtracts a time/date interval from a date and then returns the date         |
+| SUBTIME           | Subtracts a time interval from a datetime and then returns the time/datetime |
+| SYSDATE           | Returns the current date and time                                            |
+| TIME              | Extracts the time part from a given time/datetime                            |
+| TIME_FORMAT       | Formats a time by a specified format                                         |
+| TIME_TO_SEC       | Converts a time value into seconds                                           |
+| TIMEDIFF          | Returns the difference between two time/datetime expressions                 |
+| TIMESTAMP         | Returns a datetime value based on a date or datetime value                   |
+| TO_DAYS           | Returns the number of days between a date and date "0000-00-00"              |
+| WEEK              | Returns the week number for a given date                                     |
+| WEEKDAY           | Returns the weekday number for a given date                                  |
+| WEEKOFYEAR        | Returns the week number for a given date                                     |
+| YEAR              | Returns the year part for a given date                                       |
+| YEARWEEK          | Returns the year and week number for a given date                            |
+
+#### ADDDATE
+
+* The ADDDATE() function adds a time/date interval to a date and then returns the date.
+
+Syntax:
+
+```
+ADDDATE(date, INTERVAL value addunit)
+
+or
+
+ADDDATE(date, days)
+
+```
+
+Example:
+
+```
+SELECT ADDDATE("2023-04-15 09:34:21", INTERVAL 15 MINUTE);
+
+```
+Output:
+
+![image AddDate ](images/adddate.png)
+
+#### ADDTIME
+
+* The ADDTIME() function adds a time interval to a time/datetime and then returns the time/datetime.
+
+Syntax:
+
+```
+ADDTIME(datetime, addtime)
+```
+
+
+Example:
+
+```
+SELECT ADDTIME("2023-04-15 09:34:21", "2");
+```
+Output:
+
+![image ADDTIME ](images/addtime.png)
+
+#### CURRENT_DATE
+
+* The CURRENT_DATE() function returns the current date.
+
+Syntax:
+
+```
+CURRENT_DATE()
+
+or
+
+SELECT CURDATE();
+```
+
+Example:
+
+```
+SELECT CURRENT_DATE();
+```
+Output:
+
+![image Current-date ](images/current-date.png)
+
+
+#### CURRENT_TIME
+
+* The CURRENT_TIME() function returns the current time.
+
+Syntax:
+
+```
+CURRENT_TIME();
+
+or
+
+CURTIME();
+
+```
+
+Example:
+
+```
+SELECT CURTIME();
+```
+
+
+Output:
+
+![image Current-time ](images/current-time.png)
+
+#### CURRENT_TIMESTAMP
+
+* The CURRENT_TIMESTAMP() function returns the current date and time.
+
+Syntax:
+
+```
+CURRENT_TIMESTAMP()
+
+```
+
+Example:
+
+```
+SELECT CURRENT_TIMESTAMP();
+```
+
+
+Output:
+
+![image Current-timestamp ](images/current-timestamp.png)
+
+#### DATE
+
+* The DATE() function extracts the date part from a datetime expression.
+
+Syntax:
+
+```
+DATE(expression)
+
+```
+
+Example:
+
+```
+SELECT DATE("2023-04-20");
+```
+
+
+Output:
+
+![image Date ](images/date.png)
+
+#### DATEDIFF
+
+* The DATEDIFF() function returns the number of days between two date values.
+
+Syntax:
+
+```
+DATEDIFF(date1, date2)
+
+```
+
+Example:
+
+```
+SELECT DATEDIFF("2023-04-20", "2023-04-15");
+```
+
+Output:
+
+![image DATEDIFF ](images/Datediff.png)
+
+#### DATE_FORMAT
+
+* The DATE_FORMAT() function formats a date as specified.
+
+Syntax:
+
+```
+DATE_FORMAT(date, format)
+```
+
+Example:
+
+```
+SELECT DATE_FORMAT("2023-04-20", "%Y");
+```
+
+Output:
+
+![image DATE_FORMAT ](images/Date-format.png)
+
+
+#### DATE_SUB
+
+* The DATE_SUB() function subtracts a time/date interval from a date and then returns the date.
+
+Syntax:
+
+```
+DATE_SUB(date, INTERVAL value interval)
+```
+
+Example:
+
+```
+SELECT DATE_SUB("2023-04-20", INTERVAL 10 DAY);
+```
+Output:
+
+![image DATE_SUB ](images/Date-sub.png)
+
+
+#### DAY
+
+* The DAY() function returns the day of the month for a given date (a number from 1 to 31).
+
+
+Syntax:
+
+```
+DAY(date)
+```
+Example:
+
+```
+SELECT DAY(CURDATE());
+```
+Output:
+
+![image DAY ](images/day.png)
+
+
+#### DAYNAME
+
+* The DAYNAME() function returns the weekday name for a given date.
+
+Syntax:
+
+```
+DAYNAME(date)
+```
+
+Example:
+
+```
+SELECT DAYNAME(CURDATE());
+
+```
+Output:
+
+![image DAYNAME ](images/dayname.png)
+
+#### DAYOFMONTH
+
+* The DAYOFMONTH() function returns the day of the month for a given date (a number from 1 to 31).
+
+Syntax:
+
+```
+DAYOFMONTH(date)
+```
+
+Example:
+
+```
+SELECT DAYOFMONTH(CURDATE());
+
+```
+Output:
+
+![image DAYOFMONTH ](images/dayofmonth.png)
+
+#### DAYOFWEEK
+
+* The DAYOFWEEK() function returns the weekday index for a given date (a number from 1 to 7).
+
+Syntax:
+
+```
+DAYOFWEEK(date)
+```
+
+Example:
+
+```
+SELECT DAYOFWEEK(CURDATE());
+
+```
+Output:
+
+![image DAYOFWEEK ](images/Dayofweek.png)
+
+#### DAYOFYEAR
+
+* The DAYOFYEAR() function returns the day of the year for a given date (a number from 1 to 366).
+
+
+Syntax:
+
+```
+DAYOFYEAR(date)
+```
+
+Example:
+
+```
+SELECT DAYOFYEAR(CURDATE());
+
+```
+Output:
+
+![image DAYOFYEAR ](images/dayofyear.png)
+
+#### EXTRACT
+
+* The EXTRACT() function extracts a part from a given date.
+
+Syntax:
+
+```
+EXTRACT(part FROM date)
+```
+
+Example:
+
+```
+SELECT EXTRACT(YEAR_MONTH FROM "2023-04-20 09:34:21");
+
+```
+Output:
+
+![image EXTRACT ](images/extract.png)
+
+
+#### FROM_DAYS
+
+* The FROM_DAYS() function returns a date from a numeric datevalue.
+
+* The FROM_DAYS() function is to be used only with dates within the Gregorian calendar.
+
+
+Syntax:
+
+```
+FROM_DAYS(number)
+```
+
+Example:
+
+```
+SELECT FROM_DAYS(880800);
+```
+Output:
+
+![image FROM_DAYS ](images/from-day.png)
+
+#### HOUR
+
+* The HOUR() function returns the hour part for a given date (from 0 to 838).
+
+
+Syntax:
+
+```
+HOUR(datetime)
+```
+
+Example:
+
+```
+SELECT HOUR("737:59:59");
+```
+Output:
+
+![image HOUR ](images/hour.png)
+
+#### LAST_DAY
+
+* The LAST_DAY() function extracts the last day of the month for a given date.
+
+Syntax:
+
+```
+LAST_DAY(date)
+```
+
+Example:
+
+```
+SELECT LAST_DAY("2023-04-20 09:34:00");
+```
+Output:
+
+![image LAST_DAY ](images/last-day.png)
+
+#### LOCALTIME
+
+* The LOCALTIME() function returns the current date and time.
+
+Syntax:
+
+```
+LOCALTIME()
+```
+
+Example:
+
+```
+SELECT LOCALTIME();
+```
+Output:
+
+![image LOCALTIME ](images/local-time.png)
+
+#### MAKEDATE
+
+* The MAKEDATE() function creates and returns a date based on a year and a number of days value.
+
+Syntax:
+
+```
+MAKEDATE(year, day)
+```
+
+Example:
+
+```
+SELECT MAKEDATE(2023, 175);
+```
+Output:
+
+![image MAKEDATE ](images/Makedate.png)
+
+#### MAKETIME
+
+* The MAKETIME() function creates and returns a time based on an hour, minute, and second value.
+
+Syntax:
+
+```
+MAKETIME(hour, minute, second)
+```
+
+Example:
+
+```
+SELECT MAKETIME(16, 1, 0);
+```
+Output:
+
+![image MAKETIME ](images/maketime.png)
+
+#### MICROSECOND
+
+* The MICROSECOND() function returns the microsecond part of a time/datetime (from 0 to 999999).
+
+Syntax:
+
+```
+MICROSECOND(datetime)
+```
+
+Example:
+
+```
+SELECT MICROSECOND("23:59:59.000045");
+```
+Output:
+
+![image MICROSECOND ](images/microsecond.png)
+
+#### MINUTE
+
+* The MINUTE() function returns the minute part of a time/datetime (from 0 to 59).
+
+
+Syntax:
+
+```
+MINUTE(datetime)
+```
+
+Example:
+
+```
+SELECT MINUTE("23:59:59");
+```
+Output:
+
+![image MINUTE ](images/minute.png)
+
+#### MONTH
+
+* The MONTH() function returns the month part for a given date (a number from 1 to 12).
+
+Syntax:
+
+```
+MONTH(date)
+```
+
+Example:
+
+```
+SELECT MONTH(CURDATE());
+```
+Output:
+
+![image MONTH ](images/month.png)
+
+#### MONTHNAME
+
+* The MONTHNAME() function returns the name of the month for a given date.
+
+Syntax:
+
+```
+MONTHNAME(date)
+```
+
+Example:
+
+```
+SELECT MONTHNAME(CURDATE());
+```
+Output:
+
+![image MONTHNAME](images/monthname.png)
+
+#### NOW
+
+* The NOW() function returns the current date and time.
+
+Syntax:
+
+```
+NOW()
+```
+
+Example:
+
+```
+SELECT NOW();
+```
+Output:
+
+![image NOW](images/now.png)
+
+#### PERIOD_ADD
+
+* The PERIOD_ADD() function adds a specified number of months to a period.
+
+* The PERIOD_ADD() function will return the result formatted as YYYYMM.
+
+
+Syntax:
+
+```
+PERIOD_ADD(period, number)
+```
+
+Example:
+
+```
+SELECT PERIOD_ADD(202304, 20);
+```
+Output:
+
+![image PERIOD_ADD](images/period-add.png)
+
+#### PERIOD_DIFF
+
+* The PERIOD_DIFF() function returns the difference between two periods. The result will be in months.
+
+Syntax:
+
+```
+PERIOD_DIFF(period1, period2)
+```
+
+Example:
+
+```
+SELECT PERIOD_DIFF(202303, 202503);
+```
+Output:
+
+![image PERIOD_DIFF](images/period-diff.png)
+
+#### QUARTER
+
+* The QUARTER() function returns the quarter of the year for a given date value (a number from 1 to 4).
+
+Syntax:
+
+```
+QUARTER(date)
+```
+
+Example:
+
+```
+SELECT QUARTER(CURDATE());
+```
+Output:
+
+![image QUARTER](images/quarter.png)
+
+#### SECOND
+
+* The SECOND() function returns the seconds part of a time/datetime (from 0 to 59).
+
+Syntax:
+
+```
+SECOND(datetime)
+```
+
+Example:
+
+```
+SELECT SECOND("23:59:59");
+```
+Output:
+
+![image SECOND](images/second.png)
+
+#### SEC_TO_TIME
+
+* The SEC_TO_TIME() function returns a time value (in format HH:MM:SS) based on the specified seconds.
+
+
+Syntax:
+
+```
+SEC_TO_TIME(seconds)
+```
+
+Example:
+
+```
+SELECT SEC_TO_TIME(-6897);
+```
+Output:
+
+![image SEC_TO_TIME](images/sec-to-time.png)
+
+#### STR_TO_DATE
+
+* The STR_TO_DATE() function returns a date based on a string and a format.
+
+Syntax:
+
+```
+STR_TO_DATE(string, format)
+```
+
+Example:
+
+```
+SELECT STR_TO_DATE("April 20 2023", "%M %d %Y");
+```
+Output:
+
+![image STR_TO_DATE](images/STR-TO-DATE.png)
+
+#### SUBDATE
+
+* The SUBDATE() function subtracts a time/date interval from a date and then returns the date.
+
+Syntax:
+
+```
+SUBDATE(date, INTERVAL value unit)
+
+or
+
+SUBDATE(date, days)
+```
+
+Example:
+
+```
+SELECT STR_TO_DATE("April 20 2023", "%M %d %Y");
+```
+Output:
+
+![image STR_TO_DATE](images/STR-TO-DATE.png)
+
+#### SUBDATE
+
+* The SUBDATE() function subtracts a time/date interval from a date and then returns the date.
+
+Syntax:
+
+```
+SUBDATE(date, INTERVAL value unit)
+```
+
+Example:
+
+```
+SELECT SUBDATE("2023-04-20 09:34:21", INTERVAL 15 MINUTE);
+```
+Output:
+
+![image SUBDATE](images/subdate.png)
+
+#### SUBTIME
+
+* The SUBTIME() function subtracts time from a time/datetime expression and then returns the new time/datetime.
+
+
+Syntax:
+
+```
+SUBTIME(datetime, time_interval)
+```
+
+Example:
+
+```
+SELECT SUBTIME("10:24:21", "50");
+```
+Output:
+
+![image SUBTIME](images/subtime.png)
+
+#### SYSDATE
+
+* The SYSDATE() function returns the current date and time.
+
+
+Syntax:
+
+```
+SYSDATE()
+```
+
+Example:
+
+```
+SELECT SYSDATE();
+```
+Output:
+
+![image SYSDATE](images/sysdate.png)
+
+#### TIME
+
+* The TIME() function extracts the time part from a given time/datetime.
+
+Syntax:
+
+```
+TIME(expression)
+```
+
+Example:
+
+```
+SELECT TIME("2023-04-20 19:30:10.000001");
+```
+Output:
+
+![image TIME](images/time.png)
+
+#### TIME_FORMAT
+
+* The TIME_FORMAT() function formats a time by a specified format.
+
+Syntax:
+
+```
+TIME_FORMAT(time, format)
+```
+
+Example:
+
+```
+SELECT TIME_FORMAT("19:30:10", "%r");
+```
+Output:
+
+![image TIME_FORMAT](images/time-format.png)
+
+#### TIME_TO_SEC
+
+* The TIME_TO_SEC() function converts a time value into seconds.
+
+Syntax:
+
+```
+TIME_TO_SEC(time)
+```
+
+Example:
+
+```
+SELECT TIME_TO_SEC("00:00:05");
+```
+Output:
+
+![image TIME_TO_SEC](images/Time-to-sec.png)
+
+#### TIMEDIFF
+
+* The TIMEDIFF() function returns the difference between two time/datetime expressions.
+
+
+Syntax:
+
+```
+TIMEDIFF(time1, time2)
+```
+
+Example:
+
+```
+SELECT TIMEDIFF("2023-04-20 13:10:11", "2017-06-15 13:10:10");
+```
+Output:
+
+![image TIMEDIFF](images/timedif.png)
+
+#### TIMESTAMP
+
+* The TIMESTAMP() function returns a datetime value based on a date or datetime value.
+
+Syntax:
+
+```
+TIMESTAMP(expression, time)
+```
+
+Example:
+
+```
+SELECT TIMESTAMP("2017-07-23");
+```
+Output:
+
+![image TIMESTAMP](images/timestamp.png)
+
+#### TO_DAYS
+
+* The TO_DAYS() function returns the number of days between a date and year 0 (date "0000-00-00").
+
+* The TO_DAYS() function can be used only with dates within the Gregorian calendar.
+
+
+Syntax:
+
+```
+TO_DAYS(date)
+```
+
+Example:
+
+```
+SELECT TO_DAYS("2023-04-20 09:34:00");
+```
+Output:
+
+![image TO_DAYS](images/to-day.png)
+
+#### WEEK
+
+* The WEEK() function returns the week number for a given date (a number from 0 to 53).
+
+Syntax:
+
+```
+WEEK(date, firstdayofweek)
+```
+
+Example:
+
+```
+SELECT WEEK(CURDATE());
+```
+Output:
+
+![image WEEK](images/week.png)
+
+#### WEEKDAY
+
+* The WEEKDAY() function returns the weekday number for a given date.
+
+Syntax:
+
+```
+WEEKDAY(date)
+```
+
+Example:
+
+```
+SELECT WEEKDAY(CURDATE());
+```
+Output:
+
+![image WEEKDAY](images/weekday.png)
+
+#### WEEKOFYEAR
+
+* The WEEKOFYEAR() function returns the week number for a given date (a number from 1 to 53).
+
+Syntax:
+
+```
+WEEKOFYEAR(date)
+```
+
+Example:
+
+```
+SELECT WEEKOFYEAR(CURDATE());
+```
+Output:
+
+![image WEEKOFYEAR](images/weekyear.png)
+
+#### YEAR
+
+* The YEAR() function returns the year part for a given date (a number from 1000 to 9999).
+
+
+Syntax:
+
+```
+YEAR(date)
+```
+
+Example:
+
+```
+SELECT YEAR(CURDATE());
+```
+Output:
+
+![image YEAR](images/year.png)
+
+#### YEARWEEK
+
+* The YEARWEEK() function returns the year and week number (a number from 0 to 53) for a given date.
+
+
+Syntax:
+
+```
+YEARWEEK(date, firstdayofweek)
+```
+
+Example:
+
+```
+SELECT YEARWEEK(CURDATE());
+```
+Output:
+
+![image YEARWEEK](images/yearweek.png)
+
+### Control Flow Function
+
+1. [MySQL IF()](#mysql-if)
+
+2. [MySQL IFNULL()](#mysql-ifnull)
+
+3. [MySQL NULLIF()](#mysql-nullif)
+
+4. [MySQL CASE](#mysql-case)
+
+
+
+#### MySQL IF() 
+
+The IF() function returns a value if a condition is TRUE, or another value if a condition is FALSE.
+
+Syntax:
+
+```
+IF(condition, value_if_true, value_if_false)
+
+```
+Example:
+
+```
+SELECT IF(STRCMP("bye","bye") = 0, "YES", "NO");
+```
+Output:
+
+![image IF](images/if.png)
+
+#### MySQL IFNULL()
+
+* The IFNULL() function returns a specified value if the expression is NULL.
+
+* If the expression is NOT NULL, this function returns the expression.
+
+Syntax:
+
+```
+IFNULL(expression, alt_value)
+
+```
+Example:
+
+```
+SELECT IFNULL("Hii", "com");
+```
+Output:
+
+![image IFNull](images/ifnull.png)
+
+
+#### MySQL NULLIF()
+
+The NULLIF() function compares two expressions and returns NULL if they are equal. Otherwise, the first expression is returned.
+
+Syntax:
+
+```
+NULLIF(expr1, expr2)
+```
+Example:
+
+```
+SELECT NULLIF("Hello", "world");
+```
+Output:
+
+![image NULLIF](images/nullif.png)
+
+
+#### MySQL CASE
+
+* The CASE statement goes through conditions and return a value when the first condition is met (like an IF-THEN-ELSE statement). So, once a condition is true, it will stop reading and return the result.
+
+* If no conditions are true, it will return the value in the ELSE clause.
+
+* If there is no ELSE part and no conditions are true, it returns NULL.
+
+Syntax:
+
+```
+CASE
+    WHEN condition1 THEN result1
+    WHEN condition2 THEN result2
+    WHEN conditionN THEN resultN
+    ELSE result
+END;
+```
+
+Example:
+
+```
+SELECT FirstName, LastName, salary
+FROM employee
+ORDER BY
+(CASE
+    WHEN LastName IS NULL THEN salary
+    ELSE LastName
+END);
+
+
+```
+Output:
+
+![image case](images/case.png)
 
 ## MySQL Stored Procedure 
+
+* A procedure (often called a stored procedure) is a subroutine like a subprogram in a regular computing language, stored in database. 
+
+* A procedure has a name, a parameter list, and SQL statement(s). All most all relational database system supports stored procedure, MySQL 5 introduce stored procedure.
+
+* Stored procedures which you call, or functions whose return values you use in other SQL statements the same way that you use pre-installed MySQL functions like pi().
+
+* The major difference is that UDFs can be used like any other expression within SQL statements, whereas stored procedures must be invoked using the CALL statement.
+
+1. Create Procedure
+
+2. Execute Procedure
+
+3. Alter Procedure
+
+4. Drop Procedure
+
+5. Stored Procedure Parameter
+
+6. Stored Procedure Variable
+
+### Create Procedure
+
+* Following statements create a stored procedure. By default, a procedure is associated with the default database (currently used database).
+
+* To associate the procedure with a given database, specify the name as database_name.stored_procedure_name when you create it.
+
+Syntax:
+
+```
+CREATE PROCEDURE procedure_name
+AS
+BEGIN
+sql_statement
+END;
+```
+
+Example:
+
+```
+DELIMITER $$
+CREATE PROCEDURE spCreate()
+BEGIN
+CREATE TABLE sp_emp(id INT,name VARCHAR(20));	
+END$$
+DELIMITER ;
+
+CALL spCreate(); 
+
+```
+
+![image case](images/create-procedure.png)
+
+
+#### MySQL procedure parameter
+
+**IN parameter**
+
+It is the default mode. It takes a parameter as input, such as an attribute. When we define it, the calling program has to pass an argument to the stored procedure. This parameter's value is always protected.
+
+**OUT parameters**
+
+It is used to pass a parameter as output. Its value can be changed inside the stored procedure, and the changed (new) value is passed back to the calling program. It is noted that a procedure cannot access the OUT parameter's initial value when it starts.
+
+**INOUT parameters**
+
+It is a combination of IN and OUT parameters. It means the calling program can pass the argument, and the procedure can modify the INOUT parameter, and then passes the new value back to the calling program.
+
+1. [Procedure without Parameter](#procedure-without-parameter)
+
+2. [Procedures with IN Parameter](#procedures-with-in-parameter)
+
+3. [Procedures with OUT Parameter](#procedures-with-inout-parameter)
+
+4. [Procedures with INOUT Parameter](#procedures-with-out-parameter)
+
+##### Procedure without Parameter
+
+Suppose we want to display all records of this table whose salary are greater than 1000$ and count all the table rows. The following code creates a procedure named get_salary_employee:
+
+Example:
+
+```
+DELIMITER &&  
+CREATE PROCEDURE get_salary_employee ()  
+BEGIN  
+    SELECT * FROM employee WHERE salary > 1000;  
+    SELECT COUNT(FirstName) AS Total_employee FROM employee;    
+END &&  
+DELIMITER ;  
+
+```
+
+Output:
+
+<br>
+
+![image case](images/proce-without.png)
+<br>
+
+Output to call:
+
+![image case](images/proce-without-call.png)
+<br>
+
+##### Procedures with IN Parameter
+
+In this procedure, we have used the IN parameter as 'var1' of integer type to accept a number from users. Its body part fetches the records from the table using a SELECT statement and returns only those rows that will be supplied by the user. It also returns the total number of rows of the specified table. 
+
+Example:
+
+```
+DELIMITER &&  
+CREATE PROCEDURE get_employee (IN var1 INT)  
+BEGIN  
+    SELECT * FROM employee LIMIT var1;  
+    SELECT COUNT(ID) AS Total_employee FROM employee;    
+END &&  
+DELIMITER ;  
+CALL get_employee(2);
+
+```
+Output:
+
+<br>
+
+![image case](images/proce-in.png)
+<br>
+
+Output using sql-command-line :
+
+![image case](images/in-proce.png)
+<br>
+
+
+##### Procedures with OUT Parameter
+
+In this procedure, we have used the OUT parameter as the **highestsalary** of integer type. Its body part fetches the maximum salary from the table using a MAX() function.
+
+Example:
+
+```
+DELIMITER &&  
+CREATE PROCEDURE display_max_salary (OUT highestsalary INT)  
+BEGIN  
+    SELECT MAX(salary) INTO highestsalary FROM employee;   
+END &&  
+DELIMITER ;
+
+call display_max_salary(@M);
+select @M;
+
+```
+
+Output:
+
+![image display_max_salary](images/proc-out.png)
+
+
+##### Procedures with INOUT Parameter
+
+In this procedure, we have used the INOUT parameter as 'var1' of integer type. Its body part first fetches the marks from the table with the specified id and then stores it into the same variable var1. The var1 first acts as the IN parameter and then OUT parameter. Therefore, we can call it the INOUT parameter mode.
+
+Example:
+
+```
+DELIMITER &&  
+CREATE PROCEDURE display_salary (INOUT var1 INT)  
+BEGIN  
+    SELECT salary INTO var1 FROM employee WHERE ID = var1;   
+END &&  
+DELIMITER ;  
+
+SET @M = '5';  
+CALL display_salary(@M);  
+SELECT @M;
+
+```
+
+Output:
+
+![image display_salary](images/Inout-proce.png)
+
+###  ALTER PROCEDURE
+
+* This statement can be used to change the characteristics of a stored procedure. More than one change may be specified in an ALTER PROCEDURE statement. 
+
+* However, you cannot change the parameters or body of a stored procedure using this statement; to make such changes, you must drop and re-create the procedure using DROP PROCEDURE and CREATE PROCEDURE. 
+
+* You must have the ALTER ROUTINE privilege for the procedure.
+
+Example:
+
+```
+ALTER PROCEDURE display_salary
+COMMENT 'display_employee_salary';
+
+SHOW PROCEDURE STATUS;
+
+```
+
+Output:
+
+![image alter-proce](images/proce-alter.png)
+
+### DROP PROCEDURE
+
+This statement is used to drop a stored procedure or function. That is, the specified routine is removed from the server. You must have the ALTER ROUTINE privilege for the routine. 
+
+Syntax
+
+```
+DROP {PROCEDURE | FUNCTION} [IF EXISTS] sp_name
+
+```	
+Example
+
+```
+DROP PROCEDURE display_salary;
+```
+Output:
+
+![image drop-proce](images/drop-proce.png)
+
+## MySQL CURSORS
+
+* A database cursor is a control structure that enables traversal over the records in a database. Cursors are used by database programmers to process individual rows returned by database system queries. 
+
+* Cursors enable manipulation of whole result sets at once. In this scenario, a cursor enables the rows in a result set to be processed sequentially. 
+
+* In SQL procedures, a cursor makes it possible to define a result set (a set of data rows) and perform complex logic on a row by row basis. 
+
+* MySQL supports cursors inside stored programs. The syntax is as in embedded SQL. Cursors have these properties
+
+1. Asensitive: The server may or may not make a copy of its result table
+
+2. Read only: Not updatable
+
+3. Nonscrollable: Can be traversed only in one direction and cannot skip rows
+
+* To use cursors in MySQL procedures, you need to do the following:
+
+1. Declare a cursor. 
+
+2. Open a cursor. 
+
+3. Fetch the data into variables. 
+
+4. Close the cursor when done.
+
+### CURSOR PROCEDURE
+
+**Declare Cursor**
+
+The following statement declares a cursor and associates it with a SELECT statement that retrieves the rows to be traversed by the cursor.
+
+Syntax:
+
+```
+DECLARE cursor_name CURSOR FOR  
+Select statement;  
+```
+
+**Open Cursor**
+
+
+After declaring the cursor the next step is to open the cursor using open statement.
+
+Syntax:
+
+```
+Open cursor_name; 
+
+```
+
+**Fetch Cursor**
+
+* After declaring and opening the cursor, the next step is to fetch the cursor. It is used to fetch the row or the column
+
+* This statement fetches the next row for the SELECT statement associated with the specified cursor (which must be open) and advances the cursor pointer.
+
+* If a row exists, the fetched columns are stored in the named variables. The number of columns retrieved by the SELECT statement must match the number of output variables specified in the FETCH statement.
+
+
+Syntax:
+
+```
+FETCH [ NEXT [ FROM ] ] cursor_name INTO variable_list; 
+
+```
+
+**Close Cursor**
+
+This statement closes a previously opened cursor. An error occurs if the cursor is not open.
+
+Syntax:
+
+```
+Close cursor_name; 
+```
+
+### Example
+
+```
+delimiter $$
+create procedure spCursor()
+begin
+	declare v_name varchar(20);
+    declare salary INT;
+    declare flag int default 0;
+    declare sample cursor for select FirstName,salary from employee where ID=6;
+    declare continue handler for NOT FOUND set flag = 1;
+    open sample;
+    getEmp : loop
+		fetch sample into v_name,salary;
+        if flag=1 then
+			leave getEmp;
+		end if;
+        select concat(v_name,salary);
+	end loop getEmp;
+    close sample;
+end$$
+
+delimiter ;
+
+call spCursor();
+
+Set @a=6;
+Call spCursor(@a);
+Select @a;
+
+
+```
+
+Output:
+
+<br>
+![image cursor](images/cursor1.png)
+
+<br>
+
+![image cursor](images/cursor.png)
+
+<br>
