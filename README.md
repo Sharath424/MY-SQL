@@ -25,11 +25,13 @@
 
 10. [MySQL Views](#mysql-views)
 
-11. [MySQL Functions](#mysql-functions)
+11. [MySQL Stored Procedure](#mysql-stored-procedure)
 
-12. [MySQL Stored Procedure](#mysql-stored-procedure)
+12. [MySQL INDEX](#mysql-index)
 
 13. [MySQL CURSORS](#mysql-cursors)
+
+14. [MySQL Functions](#mysql-functions)
 
 ## Introduction to MySQL
 <br>
@@ -1972,6 +1974,62 @@ DROP PROCEDURE display_salary;
 Output:
 
 ![image drop-proce](images/drop-proce.png)
+
+## MySQL INDEX
+
+* Indexes are used to retrieve data from the database more quickly than otherwise. The users cannot see the indexes, they are just used to speed up searches/queries.
+
+Syntax:
+
+```
+CREATE INDEX index_name
+ON table_name (column1, column2, ...);
+```
+Syntax for unique index:
+
+```
+CREATE UNIQUE INDEX index_name
+ON table_name (column1, column2, ...);
+
+```
+
+Example:
+
+```
+CREATE INDEX idx_ename
+ON employee (LastName, FirstName);
+```
+
+
+Output:
+
+![image index](images/index.png)
+
+
+### Drop Index
+
+* The DROP INDEX statement is used to delete an index in a table.
+
+Syntax:
+
+```
+ALTER TABLE table_name
+DROP INDEX index_name;
+
+```
+Example:
+
+```
+ALTER TABLE employee
+DROP INDEX idx_ename;
+
+```
+
+
+Output:
+
+![image drop-index](images/drop-index.png)
+
 
 ## MySQL CURSORS
 
