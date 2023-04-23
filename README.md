@@ -3,6 +3,36 @@
 
 ![image My-Sql](images/My-sql.png)
 
+## Table OF Content
+
+1. [Introduction to MySQL](#introduction-to-mysql)
+
+2. [Data Types](#data-types)
+
+3. [Constraints](#constraints)
+
+4. [Data Definition Language(DDL)](#data-definition-language)
+
+5. [Data Manipulation Lanaguage(DML)](#data-manipulation-lanaguage)
+
+6. [Data Control Language](#data-control-language)
+
+7. [Transaction Control Lanaguage(TCL)](#transaction-control-lanaguage)
+
+8. [Data Query/Retrieval Language (DQL/DRL)](#data-query-retrieval-language)
+
+9. [Joins](#joins)
+
+10. [MySQL Views](#mysql-views)
+
+11. [MySQL Stored Procedure](#mysql-stored-procedure)
+
+12. [MySQL INDEX](#mysql-index)
+
+13. [MySQL CURSORS](#mysql-cursors)
+
+14. [MySQL Functions](#mysql-functions)
+
 ## Introduction to MySQL
 <br>
 
@@ -492,7 +522,7 @@ CREATE TABLE Employee (
 
 
 
-## Data Definition Language(DDL)
+## Data Definition Language
 
 A data definition language (DDL) is a computer language used to create and modify the structure of database objects in a database. These database objects include views, schemas, tables, indexes, etc.
 
@@ -678,7 +708,7 @@ Output:
 ![image truncate ](images/truncate-table.png)
 
 
-## Data Manipulation Lanaguage(DML)
+## Data Manipulation Lanaguage
 
 The DML commands in Structured Query Language change the data present in the SQL database. We can easily access, store, modify, update and delete the existing records from the database using DML commands.
 
@@ -852,7 +882,7 @@ Output:
 ![image revoke ](images/revoke.png)
 
 
-## Transaction Control Lanaguage(TCL)
+## Transaction Control Lanaguage
 
 Database Transactions:
 
@@ -981,7 +1011,7 @@ Output:
 
 
 
-## Data Query/Retrieval Language (DQL/DRL)
+## Data Query Retrieval Language 
 
 SELECT statement is used to retrieve the information from database using select statement you can do the following
 
@@ -1723,6 +1753,404 @@ Output:
 
 ![image Drop-view ](images/drop-view.png)
 
+## MySQL Stored Procedure 
+
+* A procedure (often called a stored procedure) is a subroutine like a subprogram in a regular computing language, stored in database. 
+
+* A procedure has a name, a parameter list, and SQL statement(s). All most all relational database system supports stored procedure, MySQL 5 introduce stored procedure.
+
+* Stored procedures which you call, or functions whose return values you use in other SQL statements the same way that you use pre-installed MySQL functions like pi().
+
+* The major difference is that UDFs can be used like any other expression within SQL statements, whereas stored procedures must be invoked using the CALL statement.
+
+1. [Create Procedure](#create-procedure)
+
+2. [MySQL procedure parameter](#mysql-procedure-parameter)
+
+3. [Alter Procedure](#alter-procedure)
+
+4. [Drop Procedure](#drop-procedure)
+
+
+### Create Procedure
+
+* Following statements create a stored procedure. By default, a procedure is associated with the default database (currently used database).
+
+* To associate the procedure with a given database, specify the name as database_name.stored_procedure_name when you create it.
+
+Syntax:
+
+```
+CREATE PROCEDURE procedure_name
+AS
+BEGIN
+sql_statement
+END;
+```
+
+Example:
+
+```
+DELIMITER $$
+CREATE PROCEDURE spCreate()
+BEGIN
+CREATE TABLE sp_emp(id INT,name VARCHAR(20));	
+END$$
+DELIMITER ;
+
+CALL spCreate(); 
+
+```
+
+![image case](images/create-procedure.png)
+
+
+#### MySQL procedure parameter
+
+**IN parameter**
+
+It is the default mode. It takes a parameter as input, such as an attribute. When we define it, the calling program has to pass an argument to the stored procedure. This parameter's value is always protected.
+
+**OUT parameters**
+
+It is used to pass a parameter as output. Its value can be changed inside the stored procedure, and the changed (new) value is passed back to the calling program. It is noted that a procedure cannot access the OUT parameter's initial value when it starts.
+
+**INOUT parameters**
+
+It is a combination of IN and OUT parameters. It means the calling program can pass the argument, and the procedure can modify the INOUT parameter, and then passes the new value back to the calling program.
+
+1. [Procedure without Parameter](#procedure-without-parameter)
+
+2. [Procedures with IN Parameter](#procedures-with-in-parameter)
+
+3. [Procedures with OUT Parameter](#procedures-with-inout-parameter)
+
+4. [Procedures with INOUT Parameter](#procedures-with-out-parameter)
+
+##### Procedure without Parameter
+
+Suppose we want to display all records of this table whose salary are greater than 1000$ and count all the table rows. The following code creates a procedure named get_salary_employee:
+
+Example:
+
+```
+DELIMITER &&  
+CREATE PROCEDURE get_salary_employee ()  
+BEGIN  
+    SELECT * FROM employee WHERE salary > 1000;  
+    SELECT COUNT(FirstName) AS Total_employee FROM employee;    
+END &&  
+DELIMITER ;  
+
+```
+
+Output:
+
+<br>
+
+![image case](images/proce-without.png)
+<br>
+
+Output to call:
+
+![image case](images/proce-without-call.png)
+<br>
+
+##### Procedures with IN Parameter
+
+In this procedure, we have used the IN parameter as 'var1' of integer type to accept a number from users. Its body part fetches the records from the table using a SELECT statement and returns only those rows that will be supplied by the user. It also returns the total number of rows of the specified table. 
+
+Example:
+
+```
+DELIMITER &&  
+CREATE PROCEDURE get_employee (IN var1 INT)  
+BEGIN  
+    SELECT * FROM employee LIMIT var1;  
+    SELECT COUNT(ID) AS Total_employee FROM employee;    
+END &&  
+DELIMITER ;  
+CALL get_employee(2);
+
+```
+Output:
+
+<br>
+
+![image case](images/proce-in.png)
+<br>
+
+Output using sql-command-line :
+
+![image case](images/in-proce.png)
+<br>
+
+
+##### Procedures with OUT Parameter
+
+In this procedure, we have used the OUT parameter as the **highestsalary** of integer type. Its body part fetches the maximum salary from the table using a MAX() function.
+
+Example:
+
+```
+DELIMITER &&  
+CREATE PROCEDURE display_max_salary (OUT highestsalary INT)  
+BEGIN  
+    SELECT MAX(salary) INTO highestsalary FROM employee;   
+END &&  
+DELIMITER ;
+
+call display_max_salary(@M);
+select @M;
+
+```
+
+Output:
+
+![image display_max_salary](images/proc-out.png)
+
+
+##### Procedures with INOUT Parameter
+
+In this procedure, we have used the INOUT parameter as 'var1' of integer type. Its body part first fetches the marks from the table with the specified id and then stores it into the same variable var1. The var1 first acts as the IN parameter and then OUT parameter. Therefore, we can call it the INOUT parameter mode.
+
+Example:
+
+```
+DELIMITER &&  
+CREATE PROCEDURE display_salary (INOUT var1 INT)  
+BEGIN  
+    SELECT salary INTO var1 FROM employee WHERE ID = var1;   
+END &&  
+DELIMITER ;  
+
+SET @M = '5';  
+CALL display_salary(@M);  
+SELECT @M;
+
+```
+
+Output:
+
+![image display_salary](images/Inout-proce.png)
+
+###  ALTER PROCEDURE
+
+* This statement can be used to change the characteristics of a stored procedure. More than one change may be specified in an ALTER PROCEDURE statement. 
+
+* However, you cannot change the parameters or body of a stored procedure using this statement; to make such changes, you must drop and re-create the procedure using DROP PROCEDURE and CREATE PROCEDURE. 
+
+* You must have the ALTER ROUTINE privilege for the procedure.
+
+Example:
+
+```
+ALTER PROCEDURE display_salary
+COMMENT 'display_employee_salary';
+
+SHOW PROCEDURE STATUS;
+
+```
+
+Output:
+
+![image alter-proce](images/proce-alter.png)
+
+### DROP PROCEDURE
+
+This statement is used to drop a stored procedure or function. That is, the specified routine is removed from the server. You must have the ALTER ROUTINE privilege for the routine. 
+
+Syntax
+
+```
+DROP {PROCEDURE | FUNCTION} [IF EXISTS] sp_name
+
+```	
+Example
+
+```
+DROP PROCEDURE display_salary;
+```
+Output:
+
+![image drop-proce](images/drop-proce.png)
+
+## MySQL INDEX
+
+* Indexes are used to retrieve data from the database more quickly than otherwise. The users cannot see the indexes, they are just used to speed up searches/queries.
+
+Syntax:
+
+```
+CREATE INDEX index_name
+ON table_name (column1, column2, ...);
+```
+Syntax for unique index:
+
+```
+CREATE UNIQUE INDEX index_name
+ON table_name (column1, column2, ...);
+
+```
+
+Example:
+
+```
+CREATE INDEX idx_ename
+ON employee (LastName, FirstName);
+```
+
+
+Output:
+
+![image index](images/index.png)
+
+
+### Drop Index
+
+* The DROP INDEX statement is used to delete an index in a table.
+
+Syntax:
+
+```
+ALTER TABLE table_name
+DROP INDEX index_name;
+
+```
+Example:
+
+```
+ALTER TABLE employee
+DROP INDEX idx_ename;
+
+```
+
+
+Output:
+
+![image drop-index](images/drop-index.png)
+
+
+## MySQL CURSORS
+
+* A database cursor is a control structure that enables traversal over the records in a database. Cursors are used by database programmers to process individual rows returned by database system queries. 
+
+* Cursors enable manipulation of whole result sets at once. In this scenario, a cursor enables the rows in a result set to be processed sequentially. 
+
+* In SQL procedures, a cursor makes it possible to define a result set (a set of data rows) and perform complex logic on a row by row basis. 
+
+* MySQL supports cursors inside stored programs. The syntax is as in embedded SQL. Cursors have these properties
+
+1. Asensitive: The server may or may not make a copy of its result table
+
+2. Read only: Not updatable
+
+3. Nonscrollable: Can be traversed only in one direction and cannot skip rows
+
+* To use cursors in MySQL procedures, you need to do the following:
+
+1. Declare a cursor. 
+
+2. Open a cursor. 
+
+3. Fetch the data into variables. 
+
+4. Close the cursor when done.
+
+### CURSOR PROCEDURE
+
+**Declare Cursor**
+
+The following statement declares a cursor and associates it with a SELECT statement that retrieves the rows to be traversed by the cursor.
+
+Syntax:
+
+```
+DECLARE cursor_name CURSOR FOR  
+Select statement;  
+```
+
+**Open Cursor**
+
+
+After declaring the cursor the next step is to open the cursor using open statement.
+
+Syntax:
+
+```
+Open cursor_name; 
+
+```
+
+**Fetch Cursor**
+
+* After declaring and opening the cursor, the next step is to fetch the cursor. It is used to fetch the row or the column
+
+* This statement fetches the next row for the SELECT statement associated with the specified cursor (which must be open) and advances the cursor pointer.
+
+* If a row exists, the fetched columns are stored in the named variables. The number of columns retrieved by the SELECT statement must match the number of output variables specified in the FETCH statement.
+
+
+Syntax:
+
+```
+FETCH [ NEXT [ FROM ] ] cursor_name INTO variable_list; 
+
+```
+
+**Close Cursor**
+
+This statement closes a previously opened cursor. An error occurs if the cursor is not open.
+
+Syntax:
+
+```
+Close cursor_name; 
+```
+
+### Example
+
+```
+delimiter $$
+create procedure spCursor()
+begin
+	declare v_name varchar(20);
+    declare salary INT;
+    declare flag int default 0;
+    declare sample cursor for select FirstName,salary from employee where ID=6;
+    declare continue handler for NOT FOUND set flag = 1;
+    open sample;
+    getEmp : loop
+		fetch sample into v_name,salary;
+        if flag=1 then
+			leave getEmp;
+		end if;
+        select concat(v_name,salary);
+	end loop getEmp;
+    close sample;
+end$$
+
+delimiter ;
+
+call spCursor();
+
+Set @a=6;
+Call spCursor(@a);
+Select @a;
+
+
+```
+
+Output:
+
+<br>
+![image cursor](images/cursor1.png)
+
+<br>
+
+![image cursor](images/cursor.png)
+
+<br>
 
 
 ## MySQL Functions
@@ -1731,13 +2159,13 @@ Functions in SQL Server are the database objects that contains a set of SQL stat
 
 Different types of sql server functions are as follows
 
-1. String Functions
+1. [String Functions](#string-functions)
 
-2. Number Functions
+2. [Number Functions](#numeric-functions)
 
-3. Date Functions
+3. [Date Functions](#date-functions)
 
-4. Control Flow Functions
+4. [Control Flow Functions](#control-flow-function)
 
 ### String Functions
 
@@ -1748,39 +2176,38 @@ The following table listed each of the functions with a brief description:
 
 | Function         | Description                                                                                       |
 |------------------|---------------------------------------------------------------------------------------------------|
-| ASCII            | Returns the ASCII value for the specific character                                                |
-| CHAR_LENGTH      | Returns the length of a string (in characters)                                                    |
-| CHARACTER_LENGTH | Returns the length of a string (in characters)                                                    |
-| CONCAT           | Adds two or more expressions together                                                             |
-| CONCAT_WS        | Adds two or more expressions together with a separator                                            |
-| FIELD            | Returns the index position of a value in a list of values                                         |
-| FIND_IN_SET      | Returns the position of a string within a list of strings                                         |
-| FORMAT           | Formats a number to a format like "#,###,###.##", rounded to a specified number of decimal places |
-| INSERT           | Inserts a string within a string at the specified position and for a certain number of characters |
-| INSTR            | Returns the position of the first occurrence of a string in another string                        |
-| LCASE            | Converts a string to lower-case                                                                   |
-| LEFT             | Extracts a number of characters from a string (starting from left)                                |
-| LENGTH           | Returns the length of a string (in bytes)                                                         |
-| LOCATE           | Returns the position of the first occurrence of a substring in a string                           |
-| LOWER            | Converts a string to lower-case                                                                   |
-| LPAD             | Left-pads a string with another string, to a certain length                                       |
-| LTRIM            | Removes leading spaces from a string                                                              |
-| MID              | Extracts a substring from a string (starting at any position)                                     |
-| POSITION         | Returns the position of the first occurrence of a substring in a string                           |
-| REPEAT           | Repeats a string as many times as specified                                                       |
-| REPLACE          | Replaces all occurrences of a substring within a string, with a new substring                     |
-| REVERSE          | Reverses a string and returns the result                                                          |
-| RIGHT            | Extracts a number of characters from a string (starting from right)                               |
-| RPAD             | Right-pads a string with another string, to a certain length                                      |
-| RTRIM            | Removes trailing spaces from a string                                                             |
-| SPACE            | Returns a string of the specified number of space characters                                      |
-| STRCMP           | Compares two strings                                                                              |
-| SUBSTR           | Extracts a substring from a string (starting at any position)                                     |
-| SUBSTRING        | Extracts a substring from a string (starting at any position)                                     |
-| SUBSTRING_INDEX  | Returns a substring of a string before a specified number of delimiter occurs                     |
-| TRIM             | Removes leading and trailing spaces from a string                                                 |
-| UCASE            | Converts a string to upper-case                                                                   |
-| UPPER            | Converts a string to upper-case                                                                   |
+| [ASCII](#ascii)            | Returns the ASCII value for the specific character                                      |
+| [CHAR_LENGTH](#char-length)      | Returns the length of a string (in characters)                                    |
+| [CHARACTER_LENGTH](#character-length) | Returns the length of a string (in characters)                                                    |
+| [CONCAT](#concat)           | Adds two or more expressions together                                                             |
+| [CONCAT_WS](#concat-ws)        | Adds two or more expressions together with a separator                                            |
+| [FIELD](#field)            | Returns the index position of a value in a list of values                                         |
+| [FIND_IN_SET](#find-in-set)      | Returns the position of a string within a list of strings                                         |
+| [FORMAT](#format)           | Formats a number to a format like "#,###,###.##", rounded to a specified number of decimal places |
+| [INSERT](#insert)           | Inserts a string within a string at the specified position and for a certain number of characters |
+| [INSTR](#instr)            | Returns the position of the first occurrence of a string in another string                        |
+| [LCASE](#lcase)            | Converts a string to lower-case                                                                   |
+| [LEFT](#left)             | Extracts a number of characters from a string (starting from left)                                |
+| [LENGTH](#length)           | Returns the length of a string (in bytes)                                                         |
+| [LOCATE](#locate)           | Returns the position of the first occurrence of a substring in a string                           |
+| [LOWER](#lcase)            | Converts a string to lower-case                                                                   |
+| [LPAD](#lpad)             | Left-pads a string with another string, to a certain length                                       |
+| [LTRIM](#ltrim)            | Removes leading spaces from a string                                                              |
+| [MID](#mid)              | Extracts a substring from a string (starting at any position)                                     |
+| [POSITION](#position)         | Returns the position of the first occurrence of a substring in a string                           |
+| [REPEAT](#repeat)           | Repeats a string as many times as specified                                                       |
+| [REPLACE](#replace)          | Replaces all occurrences of a substring within a string, with a new substring                     |
+| [REVERSE](#reverse)          | Reverses a string and returns the result                                                          |
+| [RIGHT](#right)            | Extracts a number of characters from a string (starting from right)                               |
+| [RPAD](#rpad)             | Right-pads a string with another string, to a certain length                                      |
+| [RTRIM](#rtrim)            | Removes trailing spaces from a string                                                             |
+| [SPACE](#space)            | Returns a string of the specified number of space characters                                      |
+| [STRCMP](#strcmp)           | Compares two strings                                                                              |
+| [SUBSTR](#substr)           | Extracts a substring from a string (starting at any position)                                     |
+| [SUBSTRING](#substr)        | Extracts a substring from a string (starting at any position)                                     |
+| [SUBSTRING_INDEX](#substring-index)  | Returns a substring of a string before a specified number of delimiter occurs                     |
+| [UCASE](#ucase)            | Converts a string to upper-case                                                                   |
+| [UPPER](#ucase)            | Converts a string to upper-case                                                                   |
 
 #### ASCII
 
@@ -1804,7 +2231,7 @@ Output:
 
 ![image AscII ](images/Ascii.png)
 
-#### CHAR_LENGTH
+#### CHAR-LENGTH
 
 * The CHAR_LENGTH() function return the length of a string
 
@@ -1829,7 +2256,7 @@ Output:
 
 
 
-#### CHARACTER_LENGTH
+#### CHARACTER-LENGTH
 
 * The CHARACTER_LENGTH() function return the length of a string
 
@@ -1879,7 +2306,7 @@ Output:
 ![image CONCAT ](images/concat.png)
 
 
-#### CONCAT_WS
+#### CONCAT WS
 
 * The CONCAT_WS() function adds two or more expressions together with a separator.
 
@@ -1926,7 +2353,7 @@ Output:
 ![image FIELD ](images/field.png)
 
 
-#### FIND_IN_SET
+#### FIND IN SET
 
 * The FIND_IN_SET() function returns the position of a string within a list of strings.
 
@@ -2394,7 +2821,7 @@ Output:
 ![image SUBSTR ](images/substr.png)
 
 
-#### SUBSTRING_INDEX
+#### SUBSTRING INDEX
 
 * The SUBSTRING_INDEX() function returns a substring of a string before a specified number of delimiter occurs.
 
@@ -2445,15 +2872,15 @@ Output:
 
 | Function | Description                                                                                 |
 |----------|---------------------------------------------------------------------------------------------|
-| AVG      | Returns the average value of an expression                                                  |
-| CEIL     | Returns the smallest integer value that is >= to a number                                   |
-| COUNT    | Returns the number of records returned by a select query                                    |
-| FLOOR    | Returns the largest integer value that is <= to a number                                    |
-| GREATEST | Returns the greatest value of the list of arguments                                         |
-| MAX      | Returns the maximum value in a set of values                                                |
-| MIN      | Returns the minimum value in a set of values                                                |
-| POWER    | Returns the value of a number raised to the power of another number                         |
-| SUM      | Calculates the sum of a set of values                                                       |
+| [AVG](#avg)      | Returns the average value of an expression                                                  |
+| [CEIL](#ceil)     | Returns the smallest integer value that is >= to a number                                   |
+| [COUNT](#count)    | Returns the number of records returned by a select query                                    |
+| [FLOOR](#floor)    | Returns the largest integer value that is <= to a number                                    |
+| [GREATEST](#greatest) | Returns the greatest value of the list of arguments                                         |
+| [MAX](#max)      | Returns the maximum value in a set of values                                                |
+| [MIN](#min)      | Returns the minimum value in a set of values                                                |
+| [POWER](#power)    | Returns the value of a number raised to the power of another number                         |
+| [SUM](#sum)      | Calculates the sum of a set of values                                                       |
 
 
 #### AVG
@@ -2655,56 +3082,56 @@ Output:
 
 | Function          | Description                                                                  |
 |-------------------|------------------------------------------------------------------------------|
-| ADDDATE           | Adds a time/date interval to a date and then returns the date                |
-| ADDTIME           | Adds a time interval to a time/datetime and then returns the time/datetime   |
-| CURDATE           | Returns the current date                                                     |
-| CURRENT_DATE      | Returns the current date                                                     |
-| CURRENT_TIME      | Returns the current time                                                     |
-| CURRENT_TIMESTAMP | Returns the current date and time                                            |
-| CURTIME           | Returns the current time                                                     |
-| DATE              | Extracts the date part from a datetime expression                            |
-| DATEDIFF          | Returns the number of days between two date values                           |
-| DATE_ADD          | Adds a time/date interval to a date and then returns the date                |
-| DATE_FORMAT       | Formats a date                                                               |
-| DATE_SUB          | Subtracts a time/date interval from a date and then returns the date         |
-| DAY               | Returns the day of the month for a given date                                |
-| DAYNAME           | Returns the weekday name for a given date                                    |
-| DAYOFMONTH        | Returns the day of the month for a given date                                |
-| DAYOFWEEK         | Returns the weekday index for a given date                                   |
-| DAYOFYEAR         | Returns the day of the year for a given date                                 |
-| EXTRACT           | Extracts a part from a given date                                            |
-| FROM_DAYS         | Returns a date from a numeric datevalue                                      |
-| HOUR              | Returns the hour part for a given date                                       |
-| LAST_DAY          | Extracts the last day of the month for a given date                          |
-| LOCALTIME         | Returns the current date and time                                            |
-| LOCALTIMESTAMP    | Returns the current date and time                                            |
-| MAKEDATE          | Creates and returns a date based on a year and a number of days value        |
-| MAKETIME          | Creates and returns a time based on an hour, minute, and second value        |
-| MICROSECOND       | Returns the microsecond part of a time/datetime                              |
-| MINUTE            | Returns the minute part of a time/datetime                                   |
-| MONTH             | Returns the month part for a given date                                      |
-| MONTHNAME         | Returns the name of the month for a given date                               |
-| NOW               | Returns the current date and time                                            |
-| PERIOD_ADD        | Adds a specified number of months to a period                                |
-| PERIOD_DIFF       | Returns the difference between two periods                                   |
-| QUARTER           | Returns the quarter of the year for a given date value                       |
-| SECOND            | Returns the seconds part of a time/datetime                                  |
-| SEC_TO_TIME       | Returns a time value based on the specified seconds                          |
-| STR_TO_DATE       | Returns a date based on a string and a format                                |
-| SUBDATE           | Subtracts a time/date interval from a date and then returns the date         |
-| SUBTIME           | Subtracts a time interval from a datetime and then returns the time/datetime |
-| SYSDATE           | Returns the current date and time                                            |
-| TIME              | Extracts the time part from a given time/datetime                            |
-| TIME_FORMAT       | Formats a time by a specified format                                         |
-| TIME_TO_SEC       | Converts a time value into seconds                                           |
-| TIMEDIFF          | Returns the difference between two time/datetime expressions                 |
-| TIMESTAMP         | Returns a datetime value based on a date or datetime value                   |
-| TO_DAYS           | Returns the number of days between a date and date "0000-00-00"              |
-| WEEK              | Returns the week number for a given date                                     |
-| WEEKDAY           | Returns the weekday number for a given date                                  |
-| WEEKOFYEAR        | Returns the week number for a given date                                     |
-| YEAR              | Returns the year part for a given date                                       |
-| YEARWEEK          | Returns the year and week number for a given date                            |
+| [ADDDATE](#adddate)           | Adds a time/date interval to a date and then returns the date                |
+| [ADDTIME](#addtime)           | Adds a time interval to a time/datetime and then returns the time/datetime   |
+| [CURDATE](#current-date)           | Returns the current date                                                     |
+| [CURRENT_DATE](#current-date)      | Returns the current date                                                     |
+| [CURRENT_TIME](#current-time)      | Returns the current time                                                     |
+| [CURRENT_TIMESTAMP](#current-timestamp) | Returns the current date and time                                            |
+| [CURTIME](#current-time)           | Returns the current time                                                     |
+| [DATE](#date)              | Extracts the date part from a datetime expression                            |
+| [DATEDIFF](#datediff)          | Returns the number of days between two date values                           |
+| [DATE_ADD](#adddate)          | Adds a time/date interval to a date and then returns the date                |
+| [DATE_FORMAT](#date-format)       | Formats a date                                                               |
+| [DATE_SUB](#date-sub)          | Subtracts a time/date interval from a date and then returns the date         |
+| [DAY](#day)               | Returns the day of the month for a given date                                |
+| [DAYNAME](#dayname)           | Returns the weekday name for a given date                                    |
+| [DAYOFMONTH](#dayofmonth)        | Returns the day of the month for a given date                                |
+| [DAYOFWEEK](#dayofweek)         | Returns the weekday index for a given date                                   |
+| [DAYOFYEAR](#dayofyear)         | Returns the day of the year for a given date                                 |
+| [EXTRACT](#extract)           | Extracts a part from a given date                                            |
+| [FROM_DAYS](#from-days)         | Returns a date from a numeric datevalue                                      |
+| [HOUR](#hour)              | Returns the hour part for a given date                                       |
+| [LAST_DAY](#last-day)          | Extracts the last day of the month for a given date                          |
+| [LOCALTIME](#localtime)         | Returns the current date and time                                            |
+| [LOCALTIMESTAMP](#localtime)    | Returns the current date and time                                            |
+| [MAKEDATE](#makedate)          | Creates and returns a date based on a year and a number of days value        |
+| [MAKETIME](#maketime)          | Creates and returns a time based on an hour, minute, and second value        |
+| [MICROSECOND](#microsecond)       | Returns the microsecond part of a time/datetime                              |
+| [MINUTE](#minute)            | Returns the minute part of a time/datetime                                   |
+| [MONTH](#month)             | Returns the month part for a given date                                      |
+| [MONTHNAME](#monthname)         | Returns the name of the month for a given date                               |
+| [NOW](#now)               | Returns the current date and time                                            |
+| [PERIOD_ADD](#period-add)        | Adds a specified number of months to a period                                |
+| [PERIOD_DIFF](#period-diff)       | Returns the difference between two periods                                   |
+| [QUARTER](#quarter)           | Returns the quarter of the year for a given date value                       |
+| [SECOND](#second)            | Returns the seconds part of a time/datetime                                  |
+| [SEC_TO_TIME](#sec-to-time)       | Returns a time value based on the specified seconds                          |
+| [STR_TO_DATE](#str-to-date)       | Returns a date based on a string and a format                                |
+| [SUBDATE](#subdate)           | Subtracts a time/date interval from a date and then returns the date         |
+| [SUBTIME](#subtime)           | Subtracts a time interval from a datetime and then returns the time/datetime |
+| [SYSDATE](#sysdate)           | Returns the current date and time                                            |
+| [TIME](#time)              | Extracts the time part from a given time/datetime                            |
+| [TIME_FORMAT](#time-format)       | Formats a time by a specified format                                         |
+| [TIME_TO_SEC](#time-to-sec)       | Converts a time value into seconds                                           |
+| [TIMEDIFF](#timediff)          | Returns the difference between two time/datetime expressions                 |
+| [TIMESTAMP](#timestamp)         | Returns a datetime value based on a date or datetime value                   |
+| [TO_DAYS](#to-days)           | Returns the number of days between a date and date "0000-00-00"              |
+| [WEEK](#week)              | Returns the week number for a given date                                     |
+| [WEEKDAY](#weekday)           | Returns the weekday number for a given date                                  |
+| [WEEKOFYEAR](#weekofyear)        | Returns the week number for a given date                                     |
+| [YEAR](#year)              | Returns the year part for a given date                                       |
+| [YEARWEEK](#yearweek)          | Returns the year and week number for a given date                            |
 
 #### ADDDATE
 
@@ -2751,7 +3178,7 @@ Output:
 
 ![image ADDTIME ](images/addtime.png)
 
-#### CURRENT_DATE
+#### CURRENT DATE
 
 * The CURRENT_DATE() function returns the current date.
 
@@ -2775,7 +3202,7 @@ Output:
 ![image Current-date ](images/current-date.png)
 
 
-#### CURRENT_TIME
+#### CURRENT TIME
 
 * The CURRENT_TIME() function returns the current time.
 
@@ -2801,7 +3228,7 @@ Output:
 
 ![image Current-time ](images/current-time.png)
 
-#### CURRENT_TIMESTAMP
+#### CURRENT TIMESTAMP
 
 * The CURRENT_TIMESTAMP() function returns the current date and time.
 
@@ -2866,7 +3293,7 @@ Output:
 
 ![image DATEDIFF ](images/Datediff.png)
 
-#### DATE_FORMAT
+#### DATE FORMAT
 
 * The DATE_FORMAT() function formats a date as specified.
 
@@ -2887,7 +3314,7 @@ Output:
 ![image DATE_FORMAT ](images/Date-format.png)
 
 
-#### DATE_SUB
+#### DATE SUB
 
 * The DATE_SUB() function subtracts a time/date interval from a date and then returns the date.
 
@@ -3029,7 +3456,7 @@ Output:
 ![image EXTRACT ](images/extract.png)
 
 
-#### FROM_DAYS
+#### FROM DAYS
 
 * The FROM_DAYS() function returns a date from a numeric datevalue.
 
@@ -3071,7 +3498,7 @@ Output:
 
 ![image HOUR ](images/hour.png)
 
-#### LAST_DAY
+#### LAST DAY
 
 * The LAST_DAY() function extracts the last day of the month for a given date.
 
@@ -3243,7 +3670,7 @@ Output:
 
 ![image NOW](images/now.png)
 
-#### PERIOD_ADD
+#### PERIOD ADD
 
 * The PERIOD_ADD() function adds a specified number of months to a period.
 
@@ -3265,7 +3692,7 @@ Output:
 
 ![image PERIOD_ADD](images/period-add.png)
 
-#### PERIOD_DIFF
+#### PERIOD DIFF
 
 * The PERIOD_DIFF() function returns the difference between two periods. The result will be in months.
 
@@ -3322,7 +3749,7 @@ Output:
 
 ![image SECOND](images/second.png)
 
-#### SEC_TO_TIME
+#### SEC TO TIME
 
 * The SEC_TO_TIME() function returns a time value (in format HH:MM:SS) based on the specified seconds.
 
@@ -3342,7 +3769,7 @@ Output:
 
 ![image SEC_TO_TIME](images/sec-to-time.png)
 
-#### STR_TO_DATE
+#### STR TO DATE
 
 * The STR_TO_DATE() function returns a date based on a string and a format.
 
@@ -3462,7 +3889,7 @@ Output:
 
 ![image TIME](images/time.png)
 
-#### TIME_FORMAT
+#### TIME FORMAT
 
 * The TIME_FORMAT() function formats a time by a specified format.
 
@@ -3481,7 +3908,7 @@ Output:
 
 ![image TIME_FORMAT](images/time-format.png)
 
-#### TIME_TO_SEC
+#### TIME TO SEC
 
 * The TIME_TO_SEC() function converts a time value into seconds.
 
@@ -3539,7 +3966,7 @@ Output:
 
 ![image TIMESTAMP](images/timestamp.png)
 
-#### TO_DAYS
+#### TO DAYS
 
 * The TO_DAYS() function returns the number of days between a date and year 0 (date "0000-00-00").
 
@@ -3766,348 +4193,3 @@ Output:
 
 ![image case](images/case.png)
 
-## MySQL Stored Procedure 
-
-* A procedure (often called a stored procedure) is a subroutine like a subprogram in a regular computing language, stored in database. 
-
-* A procedure has a name, a parameter list, and SQL statement(s). All most all relational database system supports stored procedure, MySQL 5 introduce stored procedure.
-
-* Stored procedures which you call, or functions whose return values you use in other SQL statements the same way that you use pre-installed MySQL functions like pi().
-
-* The major difference is that UDFs can be used like any other expression within SQL statements, whereas stored procedures must be invoked using the CALL statement.
-
-1. Create Procedure
-
-2. Execute Procedure
-
-3. Alter Procedure
-
-4. Drop Procedure
-
-5. Stored Procedure Parameter
-
-6. Stored Procedure Variable
-
-### Create Procedure
-
-* Following statements create a stored procedure. By default, a procedure is associated with the default database (currently used database).
-
-* To associate the procedure with a given database, specify the name as database_name.stored_procedure_name when you create it.
-
-Syntax:
-
-```
-CREATE PROCEDURE procedure_name
-AS
-BEGIN
-sql_statement
-END;
-```
-
-Example:
-
-```
-DELIMITER $$
-CREATE PROCEDURE spCreate()
-BEGIN
-CREATE TABLE sp_emp(id INT,name VARCHAR(20));	
-END$$
-DELIMITER ;
-
-CALL spCreate(); 
-
-```
-
-![image case](images/create-procedure.png)
-
-
-#### MySQL procedure parameter
-
-**IN parameter**
-
-It is the default mode. It takes a parameter as input, such as an attribute. When we define it, the calling program has to pass an argument to the stored procedure. This parameter's value is always protected.
-
-**OUT parameters**
-
-It is used to pass a parameter as output. Its value can be changed inside the stored procedure, and the changed (new) value is passed back to the calling program. It is noted that a procedure cannot access the OUT parameter's initial value when it starts.
-
-**INOUT parameters**
-
-It is a combination of IN and OUT parameters. It means the calling program can pass the argument, and the procedure can modify the INOUT parameter, and then passes the new value back to the calling program.
-
-1. [Procedure without Parameter](#procedure-without-parameter)
-
-2. [Procedures with IN Parameter](#procedures-with-in-parameter)
-
-3. [Procedures with OUT Parameter](#procedures-with-inout-parameter)
-
-4. [Procedures with INOUT Parameter](#procedures-with-out-parameter)
-
-##### Procedure without Parameter
-
-Suppose we want to display all records of this table whose salary are greater than 1000$ and count all the table rows. The following code creates a procedure named get_salary_employee:
-
-Example:
-
-```
-DELIMITER &&  
-CREATE PROCEDURE get_salary_employee ()  
-BEGIN  
-    SELECT * FROM employee WHERE salary > 1000;  
-    SELECT COUNT(FirstName) AS Total_employee FROM employee;    
-END &&  
-DELIMITER ;  
-
-```
-
-Output:
-
-<br>
-
-![image case](images/proce-without.png)
-<br>
-
-Output to call:
-
-![image case](images/proce-without-call.png)
-<br>
-
-##### Procedures with IN Parameter
-
-In this procedure, we have used the IN parameter as 'var1' of integer type to accept a number from users. Its body part fetches the records from the table using a SELECT statement and returns only those rows that will be supplied by the user. It also returns the total number of rows of the specified table. 
-
-Example:
-
-```
-DELIMITER &&  
-CREATE PROCEDURE get_employee (IN var1 INT)  
-BEGIN  
-    SELECT * FROM employee LIMIT var1;  
-    SELECT COUNT(ID) AS Total_employee FROM employee;    
-END &&  
-DELIMITER ;  
-CALL get_employee(2);
-
-```
-Output:
-
-<br>
-
-![image case](images/proce-in.png)
-<br>
-
-Output using sql-command-line :
-
-![image case](images/in-proce.png)
-<br>
-
-
-##### Procedures with OUT Parameter
-
-In this procedure, we have used the OUT parameter as the **highestsalary** of integer type. Its body part fetches the maximum salary from the table using a MAX() function.
-
-Example:
-
-```
-DELIMITER &&  
-CREATE PROCEDURE display_max_salary (OUT highestsalary INT)  
-BEGIN  
-    SELECT MAX(salary) INTO highestsalary FROM employee;   
-END &&  
-DELIMITER ;
-
-call display_max_salary(@M);
-select @M;
-
-```
-
-Output:
-
-![image display_max_salary](images/proc-out.png)
-
-
-##### Procedures with INOUT Parameter
-
-In this procedure, we have used the INOUT parameter as 'var1' of integer type. Its body part first fetches the marks from the table with the specified id and then stores it into the same variable var1. The var1 first acts as the IN parameter and then OUT parameter. Therefore, we can call it the INOUT parameter mode.
-
-Example:
-
-```
-DELIMITER &&  
-CREATE PROCEDURE display_salary (INOUT var1 INT)  
-BEGIN  
-    SELECT salary INTO var1 FROM employee WHERE ID = var1;   
-END &&  
-DELIMITER ;  
-
-SET @M = '5';  
-CALL display_salary(@M);  
-SELECT @M;
-
-```
-
-Output:
-
-![image display_salary](images/Inout-proce.png)
-
-###  ALTER PROCEDURE
-
-* This statement can be used to change the characteristics of a stored procedure. More than one change may be specified in an ALTER PROCEDURE statement. 
-
-* However, you cannot change the parameters or body of a stored procedure using this statement; to make such changes, you must drop and re-create the procedure using DROP PROCEDURE and CREATE PROCEDURE. 
-
-* You must have the ALTER ROUTINE privilege for the procedure.
-
-Example:
-
-```
-ALTER PROCEDURE display_salary
-COMMENT 'display_employee_salary';
-
-SHOW PROCEDURE STATUS;
-
-```
-
-Output:
-
-![image alter-proce](images/proce-alter.png)
-
-### DROP PROCEDURE
-
-This statement is used to drop a stored procedure or function. That is, the specified routine is removed from the server. You must have the ALTER ROUTINE privilege for the routine. 
-
-Syntax
-
-```
-DROP {PROCEDURE | FUNCTION} [IF EXISTS] sp_name
-
-```	
-Example
-
-```
-DROP PROCEDURE display_salary;
-```
-Output:
-
-![image drop-proce](images/drop-proce.png)
-
-## MySQL CURSORS
-
-* A database cursor is a control structure that enables traversal over the records in a database. Cursors are used by database programmers to process individual rows returned by database system queries. 
-
-* Cursors enable manipulation of whole result sets at once. In this scenario, a cursor enables the rows in a result set to be processed sequentially. 
-
-* In SQL procedures, a cursor makes it possible to define a result set (a set of data rows) and perform complex logic on a row by row basis. 
-
-* MySQL supports cursors inside stored programs. The syntax is as in embedded SQL. Cursors have these properties
-
-1. Asensitive: The server may or may not make a copy of its result table
-
-2. Read only: Not updatable
-
-3. Nonscrollable: Can be traversed only in one direction and cannot skip rows
-
-* To use cursors in MySQL procedures, you need to do the following:
-
-1. Declare a cursor. 
-
-2. Open a cursor. 
-
-3. Fetch the data into variables. 
-
-4. Close the cursor when done.
-
-### CURSOR PROCEDURE
-
-**Declare Cursor**
-
-The following statement declares a cursor and associates it with a SELECT statement that retrieves the rows to be traversed by the cursor.
-
-Syntax:
-
-```
-DECLARE cursor_name CURSOR FOR  
-Select statement;  
-```
-
-**Open Cursor**
-
-
-After declaring the cursor the next step is to open the cursor using open statement.
-
-Syntax:
-
-```
-Open cursor_name; 
-
-```
-
-**Fetch Cursor**
-
-* After declaring and opening the cursor, the next step is to fetch the cursor. It is used to fetch the row or the column
-
-* This statement fetches the next row for the SELECT statement associated with the specified cursor (which must be open) and advances the cursor pointer.
-
-* If a row exists, the fetched columns are stored in the named variables. The number of columns retrieved by the SELECT statement must match the number of output variables specified in the FETCH statement.
-
-
-Syntax:
-
-```
-FETCH [ NEXT [ FROM ] ] cursor_name INTO variable_list; 
-
-```
-
-**Close Cursor**
-
-This statement closes a previously opened cursor. An error occurs if the cursor is not open.
-
-Syntax:
-
-```
-Close cursor_name; 
-```
-
-### Example
-
-```
-delimiter $$
-create procedure spCursor()
-begin
-	declare v_name varchar(20);
-    declare salary INT;
-    declare flag int default 0;
-    declare sample cursor for select FirstName,salary from employee where ID=6;
-    declare continue handler for NOT FOUND set flag = 1;
-    open sample;
-    getEmp : loop
-		fetch sample into v_name,salary;
-        if flag=1 then
-			leave getEmp;
-		end if;
-        select concat(v_name,salary);
-	end loop getEmp;
-    close sample;
-end$$
-
-delimiter ;
-
-call spCursor();
-
-Set @a=6;
-Call spCursor(@a);
-Select @a;
-
-
-```
-
-Output:
-
-<br>
-![image cursor](images/cursor1.png)
-
-<br>
-
-![image cursor](images/cursor.png)
-
-<br>
