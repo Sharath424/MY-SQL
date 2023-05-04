@@ -1,0 +1,4 @@
+CREATE VIEW sampleView2 
+AS select ID,FirstName,salary from employee;
+
+SELECT * FROM sampleView2;

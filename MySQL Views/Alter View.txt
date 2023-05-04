@@ -1,0 +1,9 @@
+DESCRIBE sampleView2;
+ALTER VIEW sampleView2 AS select * from employee;
+DESCRIBE sampleView2;
+
+or
+
+DESCRIBE sampleView2;
+CREATE or REPLACE VIEW sampleView2 AS select ID,FirstName,salary from employee;
+DESCRIBE sampleView2;
