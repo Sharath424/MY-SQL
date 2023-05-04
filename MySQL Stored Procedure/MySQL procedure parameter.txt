@@ -1,0 +1,44 @@
+<---Procedure without Parameter---->
+
+DELIMITER &&  
+CREATE PROCEDURE get_salary_employee ()  
+BEGIN  
+    SELECT * FROM employee WHERE salary > 1000;  
+    SELECT COUNT(FirstName) AS Total_employee FROM employee;    
+END &&  
+DELIMITER ;
+
+<----Procedures with IN Parameter---->
+
+DELIMITER &&  
+CREATE PROCEDURE get_employee (IN var1 INT)  
+BEGIN  
+    SELECT * FROM employee LIMIT var1;  
+    SELECT COUNT(ID) AS Total_employee FROM employee;    
+END &&  
+DELIMITER ;  
+CALL get_employee(2);
+
+<---Procedures with OUT Parameter--->
+
+DELIMITER &&  
+CREATE PROCEDURE display_max_salary (OUT highestsalary INT)  
+BEGIN  
+    SELECT MAX(salary) INTO highestsalary FROM employee;   
+END &&  
+DELIMITER ;
+
+call display_max_salary(@M);
+select @M;
+
+<---Procedures with INOUT Parameter--->
+DELIMITER &&  
+CREATE PROCEDURE display_salary (INOUT var1 INT)  
+BEGIN  
+    SELECT salary INTO var1 FROM employee WHERE ID = var1;   
+END &&  
+DELIMITER ;  
+
+SET @M = '5';  
+CALL display_salary(@M);  
+SELECT @M;

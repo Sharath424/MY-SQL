@@ -1,0 +1,8 @@
+DELIMITER $$
+CREATE PROCEDURE spCreate()
+BEGIN
+CREATE TABLE sp_emp(id INT,name VARCHAR(20));	
+END$$
+DELIMITER ;
+
+CALL spCreate();
