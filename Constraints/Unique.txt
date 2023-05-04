@@ -1,0 +1,30 @@
+<--- Unique--->
+
+CREATE TABLE Employee (
+    ID int NOT NULL,
+    FirstName varchar(255) NOT NULL,
+    LastName varchar(255) NOT NULL,
+    Age int ,
+    UNIQUE (ID)
+);
+
+
+<--- Multiple Unique--->
+
+CREATE TABLE Employee (
+    ID int NOT NULL,
+    FirstName varchar(255) NOT NULL,
+    LastName varchar(255) NOT NULL,
+    Age int ,
+    CONSTRAINT UC_Employee UNIQUE (ID,LastName)
+);
+
+<--- Alter Unique--->
+
+ALTER TABLE Employee
+ADD CONSTRAINT UC_Employee UNIQUE (ID,LastName);
+
+<----Drop Unique---=>
+
+ALTER TABLE Employee
+DROP INDEX UC_Employee;
