@@ -1,0 +1,4 @@
+<---Update command--->
+UPDATE Employee
+SET FirstName = 'Alfred', LastName = 'Schmidt'
+WHERE ID = 1;

@@ -1,0 +1,4 @@
+<---grant--->
+CREATE USER john@localhost IDENTIFIED BY 'jtp12345';
+
+GRANT ALL ON employee.* TO john@localhost;
