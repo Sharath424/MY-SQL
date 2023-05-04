@@ -1,0 +1,2 @@
+CREATE INDEX idx_ename
+ON employee (LastName, FirstName);

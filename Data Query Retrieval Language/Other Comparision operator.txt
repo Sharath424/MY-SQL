@@ -1,0 +1,19 @@
+<--Between And--->
+
+SELECT * FROM employee
+WHERE salary BETWEEN 2000 AND 25000;
+
+<---In--->
+SELECT * FROM employee
+WHERE City IN ('Paris','London');
+
+
+<---Like--->
+SELECT * FROM employee
+WHERE FirstName LIKE 'e%';
+
+
+<---Is Null-->
+SELECT FirstName,LastName,salary,City FROM employee WHERE salary IS NULL;
+
+SELECT FirstName,LastName,salary,City FROM employee WHERE salary IS  NOT NULL;

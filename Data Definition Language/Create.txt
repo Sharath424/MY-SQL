@@ -1,0 +1,14 @@
+/* to create database */
+CREATE DATABASE EmployeeManagement;
+
+/* to create schema */
+CREATE SCHEMA Employees;
+
+/* to create table */
+CREATE TABLE Employee (
+    ID int NOT NULL,
+    FirstName varchar(255) NOT NULL,
+    LastName varchar(255) NOT NULL,
+    Age int ,
+   CONSTRAINT PK_Employee PRIMARY KEY (ID,LastName)
+);

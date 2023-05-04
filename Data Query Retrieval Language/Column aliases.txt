@@ -1,0 +1,2 @@
+SELECT ID AS EmployeeID, FirstName  AS EmployeeName
+FROM employee;

@@ -1,0 +1,14 @@
+CREATE TABLE EmployeeDetails (
+    EmployeeDetailsID int NOT NULL,
+    ID int NOT NULL,
+    Address varchar(255) NOT NULL,
+    City varchar(255) NOT NULL , 
+    PRIMARY KEY (EmployeeDetailsID),
+    FOREIGN KEY (ID) REFERENCES Employee(ID)
+);
+
+<---Inner Join--->
+
+SELECT EmployeeDetails.EmployeeDetailsID, employee.FirstName
+FROM EmployeeDetails
+INNER JOIN employee ON EmployeeDetails.ID = employee.ID;

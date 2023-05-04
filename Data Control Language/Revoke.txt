@@ -1,0 +1,2 @@
+<--Revoke ---->
+REVOKE ALL, GRANT OPTION FROM john@localhost;  

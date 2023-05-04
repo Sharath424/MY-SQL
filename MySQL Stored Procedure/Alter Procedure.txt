@@ -1,0 +1,4 @@
+ALTER PROCEDURE display_salary
+COMMENT 'display_employee_salary';
+
+SHOW PROCEDURE STATUS;

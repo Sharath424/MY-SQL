@@ -1,0 +1,8 @@
+<---Select Query--->
+
+SELECT * FROM employee;
+
+SELECT Id,first_name,last_name FROM employee.employees;
+
+<---Arithmetic Expressions--->
+SELECT ID,FirstName,LastName,salary,(20*salary-100)/2 FROM employee;

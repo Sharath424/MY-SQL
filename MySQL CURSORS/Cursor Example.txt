@@ -1,0 +1,26 @@
+delimiter $$
+create procedure spCursor()
+begin
+	declare v_name varchar(20);
+    declare salary INT;
+    declare flag int default 0;
+    declare sample cursor for select FirstName,salary from employee where ID=6;
+    declare continue handler for NOT FOUND set flag = 1;
+    open sample;
+    getEmp : loop
+		fetch sample into v_name,salary;
+        if flag=1 then
+			leave getEmp;
+		end if;
+        select concat(v_name,salary);
+	end loop getEmp;
+    close sample;
+end$$
+
+delimiter ;
+
+call spCursor();
+
+Set @a=6;
+Call spCursor(@a);
+Select @a;

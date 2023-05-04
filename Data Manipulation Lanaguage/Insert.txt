@@ -1,0 +1,3 @@
+<-- insert command--->
+INSERT INTO Employee (ID,FirstName, LastName, Age)
+VALUES (1,'Cardinal', 'Tom B. Erichsen', 21)
