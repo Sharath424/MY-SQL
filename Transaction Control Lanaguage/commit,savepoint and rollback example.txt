@@ -1,0 +1,32 @@
+<---commit--->
+
+COMMIT;
+
+<---savepoint--->
+
+SAVEPOINT transactionA;
+
+<---roll back--->
+ROLLBACK to transactionA;
+
+<---Example--->
+
+create table student(id INT,name VARCHAR(20));
+start transaction;
+select * from student;
+insert into student values(10,'Dravid');
+savepoint transactionInsert;
+insert into student values(20,'Sachin');
+insert into student values(30,'Dhoni');
+insert into student values(40,'kohli');
+select * from student;
+savepoint transactionDelete;
+delete from student where id=10;
+delete from student where id=20;
+select * from student;
+rollback to transactionDelete;
+select * from student;
+rollback to transactionDelete;
+select * from student;
+rollback;
+select * from student;
