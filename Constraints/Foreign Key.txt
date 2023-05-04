@@ -1,0 +1,43 @@
+<---Foreign key--->
+
+CREATE TABLE Employee (
+    ID int NOT NULL,
+    FirstName varchar(255) NOT NULL,
+    LastName varchar(255) NOT NULL,
+    Age int ,
+    PRIMARY KEY (ID)
+);
+
+CREATE TABLE Salary (
+    SalaryID int NOT NULL,
+    Salary int NOT NULL,
+    EmployeeID int,
+    PRIMARY KEY (SalaryID),
+    FOREIGN KEY (EmployeeID) REFERENCES Employee(ID)
+);
+
+
+<---Alter Foreign Key--->
+CREATE TABLE Employee (
+    ID int NOT NULL,
+    FirstName varchar(255) NOT NULL,
+    LastName varchar(255) NOT NULL,
+    Age int ,
+    PRIMARY KEY (ID)
+);
+
+CREATE TABLE Salary (
+    SalaryID int NOT NULL,
+    Salary int NOT NULL,
+    EmployeeID int,
+    PRIMARY KEY (SalaryID),
+);
+
+ALTER TABLE Salary
+ADD FOREIGN KEY (EmployeeID) REFERENCES Employee(ID);
+
+<---Drop Foreign Key--->
+
+ALTER TABLE Salary
+DROP FOREIGN KEY FK_EmployeeSalary;
+

@@ -1,0 +1,31 @@
+<---Primary key--->
+
+CREATE TABLE Employee (
+    ID int NOT NULL,
+    FirstName varchar(255) NOT NULL,
+    LastName varchar(255) NOT NULL,
+    Age int ,
+    PRIMARY KEY (ID)
+);
+
+<---Mulitple Primary key--->
+
+CREATE TABLE Employee (
+    ID int NOT NULL,
+    FirstName varchar(255) NOT NULL,
+    LastName varchar(255) NOT NULL,
+    Age int ,
+   CONSTRAINT PK_Employee PRIMARY KEY (ID,LastName)
+);
+
+<---Alter Primary Key--->
+
+ALTER TABLE Employee
+ADD PRIMARY KEY (ID);
+
+<--Drop Primary--->
+
+ALTER TABLE Employee
+DROP PRIMARY KEY;
+
+
