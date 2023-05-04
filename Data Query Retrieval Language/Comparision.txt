@@ -1,0 +1,25 @@
+<---Greater than--->
+SELECT * FROM employee
+WHERE salary > 2500;
+
+<---Equal to--->
+SELECT * FROM employee
+WHERE salary = 2500;
+
+<---Greater than or Equal to--->
+
+SELECT * FROM employee
+WHERE salary >= 2500;
+
+<--Less than--->
+SELECT * FROM employee
+WHERE salary < 2500;
+
+<--Less than or Equal to--->
+SELECT * FROM employee
+WHERE salary <⇐ 2500;
+
+<---Not equal to--->
+
+SELECT * FROM employee
+WHERE salary ^= 2500;
