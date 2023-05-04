@@ -1,0 +1,17 @@
+<--Alter Command-->
+
+ALTER TABLE Employee
+ADD Email varchar(255);
+
+
+<---Modify Column-->
+ALTER TABLE Employee
+ADD DateOfBirth date;
+
+ALTER TABLE Employee
+MODIFY COLUMN DateOfBirth year;
+
+<--Delete Column-->
+
+ALTER TABLE Employee
+DROP COLUMN DateOfBirth;
