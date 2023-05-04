@@ -1,0 +1,12 @@
+<---left join--->
+SELECT employee.FirstName, EmployeeDetails.EmployeeDetailsID
+FROM employee
+LEFT JOIN EmployeeDetails ON employee.ID = EmployeeDetails.ID
+ORDER BY employee.FirstName;
+
+
+<---Right Join--->
+SELECT EmployeeDetails.EmployeeDetailsID, employee.LastName, employee.FirstName
+FROM EmployeeDetails
+RIGHT JOIN employee ON EmployeeDetails.ID = employee.ID
+ORDER BY EmployeeDetails.EmployeeDetailsID;
