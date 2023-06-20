@@ -134,8 +134,11 @@
 * CREATE TABLE - creates a new table
 * ALTER TABLE - modifies a table
 * DROP TABLE - deletes a table
-* CREATE INDEX - creates an index (search key)
+* CREATE INDEX - creates an index (search key)  
 * DROP INDEX - deletes an index
+
+
+[Refer this link for MySql shortcuts](https://dev.mysql.com/doc/workbench/en/wb-keys.html)
 
 ### Installation of MySQL WorkBench
 
@@ -164,6 +167,30 @@
 >(https://www.youtube.com/watch?v=YSOY_NyOg40)
 
 
+### Creation of database
+
+Syntax:
+
+```markdown
+
+CREATE DATABASE database_name;
+
+```
+
+Example:
+
+```markdown
+
+CREATE DATABASE EmployeeDB;
+
+```
+
+![database creation](images/create-database.png)
+
+
+
+
+
 
 
 ## Data Types
@@ -178,6 +205,8 @@ In MySQL there are three main data types: text, number, and date and time.
 * [Number data Types](#number-data-types)
 
 * [Date data types](#date-data-types)
+
+[For examples refer this link](https://blog.devart.com/mysql-data-types.html)
 
 <br>
 
@@ -831,24 +860,43 @@ The DCL statements are
 
 * It is used to provide any user access privileges or other privileges for the database
 
-Syntax:
+* Go to windows start menu and search mysql command line.
+
+* Click on mysql command line. It will open the mysql command line and it looks like the following image and then enter the password
+
+
+![command line ](images/commandline.png)
+
+
+Syntax for creating the user:
 
 ```
-/* Grant read only to a User */
-GRANT SELECT ON table_name TO user_name;
-
-/* Grant insert,update,delete & select function to a user */
-GRANT INSERT, UPDATE, DELETE, SELECT ON table_name TO user_name;
+CREATE USER user_name IDENTIFIED BY 'user_password';
 
 ```
 
-Example:
+Example for creating the user:
 
 ```
 
 CREATE USER john@localhost IDENTIFIED BY 'jtp12345';
 
+
+```
+
+Syntax for granting privilages:
+
+```
+GRANT ALL ON Object.* TO user_name;
+
+```
+
+Example for granting privilages:
+
+```
+
 GRANT ALL ON employee.* TO john@localhost;
+
 
 ```
 
